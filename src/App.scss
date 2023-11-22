@@ -1,0 +1,97 @@
+#root {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: 'Fira Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
+  width:100%;
+}
+.player-input {
+  display:flex;
+  flex-direction: column;
+  justify-content: space-between;
+  
+  @media screen and (min-width:768px){
+    display:flex;
+    flex-direction: row;
+    gap:20px;
+    justify-content: space-between;
+  }
+  
+  .result {
+    width:100%;
+    ul {
+      margin-top:15px;
+    }
+  }
+}
+.mats-calc {
+  margin: 0 auto;
+  max-width:350px;
+  padding:10px 20px;
+  width:100%;
+
+  @media screen and (min-width:768px){
+    max-width:50%;
+    padding: 10px 0;
+  }
+
+  button {
+    margin:10px 0;
+    font-size:12px;
+    padding:8px 16px;
+  }
+}
+
+.have-cloth .actions {
+  align-items: center;
+  display:flex;
+  gap:10px;
+  .cloth-count {
+    font-size:12px;
+  }
+}
+
+.mats {
+  color:#fafafa;
+  font-size:12px;
+  padding:10px 20px;
+  border: thin solid #fafafa;
+  max-width:350px;
+  margin: 20px auto;
+
+  display:flex;
+  flex-direction: column;
+  gap:6px;
+  justify-content: space-between;
+
+  @media screen and (min-width:768px){
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin:20px 0;
+    max-width:100%;
+  }
+}
+.desktop-only {
+  display:none;
+}
+@media screen and (min-width:865px){
+  .desktop-only {
+    display:initial;
+  }
+}
+
+// .modeToggle {
+//   fieldset {
+//     border: none;
+//     display:flex;
+//     justify-content: space-between;
+//     margin:0;
+//     padding-left:0;
+//     padding-right:0;
+//   }
+//   input {
+//     margin: 0.4rem 0.4rem 0.4rem 0;
+//   }
+// }
