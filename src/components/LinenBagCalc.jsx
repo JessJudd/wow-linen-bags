@@ -5,7 +5,7 @@ export const LinenBagCalc = () => {
     const coarseThread = 3;
 
     const [linenCloth,setLinenCloth] = useState(0)
-    
+
     function addCloth(){
         let cloths = linenCloth + 1
 
@@ -91,7 +91,7 @@ export const LinenBagCalc = () => {
             
             <div className="mats">
                 <p>1x Bolt of Linen Cloth = 2x Linen Cloth</p>
-                <p>1x Linen Bag = 3x Bolt of Linen Cloth + 2 Coarse Thread</p>
+                <p>1x Linen Bag = 3x Bolt of Linen Cloth + {coarseThread} Coarse Thread</p>
                 <p>1x Coarse Thread: 10cp</p>
             </div>
 
