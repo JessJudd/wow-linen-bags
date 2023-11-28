@@ -6,7 +6,7 @@
   "homepage": "https://jessjudd.github.io/wow-linen-bags/",
   "scripts": {
     "dev": "vite",
-    "build": "vite dist",
+    "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "deploy": "gh-pages -d dist"

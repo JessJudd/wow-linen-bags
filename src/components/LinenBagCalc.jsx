@@ -2,13 +2,10 @@ import { useState } from 'react'
 
 export const LinenBagCalc = () => {
 
+    const coarseThread = 3;
+
     const [linenCloth,setLinenCloth] = useState(0)
-
-    // function resetAll(){
-    //     setLinenCloth(0)
-    //     setLinenBags(0)
-    // }
-
+    
     function addCloth(){
         let cloths = linenCloth + 1
 
@@ -19,7 +16,7 @@ export const LinenBagCalc = () => {
 
         setNewBags(bags)
 
-        let threadCount = bags * 2
+        let threadCount = bags * coarseThread
         let threadCost = threadCount * 10
 
         setClothThread(threadCount)
@@ -39,7 +36,7 @@ export const LinenBagCalc = () => {
         setNeedCloth(cloths)
         setClothBolts(bolts)
 
-        let threadCount = bags * 2
+        let threadCount = bags * coarseThread
         let threadCost = threadCount * 10
         
         setBagThread(threadCount)
