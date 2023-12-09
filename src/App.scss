@@ -116,6 +116,14 @@ nav {
       // border-top-color:var(--pinkgem5);
       filter:grayscale(50%);
     }
+
+    &.reset {
+      background:var(--gem3);
+      border-bottom-color:var(--gem5);
+      border-top-color:var(--gem1);
+      border-left-color: var(--gem2);
+      border-right-color: var(--gem3);
+    }
   }
 
   @media screen and (min-width:768px){

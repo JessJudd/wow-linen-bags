@@ -1,18 +1,23 @@
 import { useState } from 'react'
 
-export const ClothToBags = () => {
+import { BAGS } from '../constants.js';
 
-    const COARSE_THREAD = 3;
-    const [linenCloth,setLinenCloth] = useState(0)
+export const ClothToBags = ({linenCloth, setLinenCloth}) => {
+
+    // const [linenCloth,setLinenCloth] = useState(0);
 
     function addCloth(){
-        setLinenCloth(prevLinenCloth => prevLinenCloth + 1)
+        setLinenCloth(prevLinenCloth => prevLinenCloth + 1);
     }
 
-    let boltCount = linenCloth > 1 && Math.floor(linenCloth / 2)
-    let bagCount = linenCloth > 5 && Math.floor(linenCloth / 6)
-    let threadCount = linenCloth > 5 && ((Math.floor(linenCloth / 6)) * COARSE_THREAD)
-    let bagPlural = bagCount > 1 ? 'Bags' : 'Bag'
+    function resetCloth(){
+        setLinenCloth(0);
+    }
+
+    const boltCount = linenCloth > 1 && Math.floor(linenCloth / 2);
+    const bagCount = linenCloth > 5 && Math.floor(linenCloth / 6);
+    const threadCount = linenCloth > 5 && ((Math.floor(linenCloth / 6)) * BAGS.linen.threadCount);
+    const bagPlural = bagCount > 1 ? 'Bags' : 'Bag';
 
     return (
         <div className="mats-calc have-cloth">
@@ -33,6 +38,7 @@ export const ClothToBags = () => {
                     <span className="lead">Buy:</span> <span className="value vendor">{threadCount} Coarse Thread</span>
                 </div>
             }
+            <button className="reset" onClick={resetCloth}>Clear</button>
         </div>
     )
 }

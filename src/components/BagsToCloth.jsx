@@ -1,19 +1,21 @@
 import { useState } from 'react'
 
-export const BagsToCloth = () => {
+import { BAGS } from '../constants.js';
 
-    const COARSE_THREAD = 3;
-
-    const [linenBags,setLinenBags] = useState(0)
+export const BagsToCloth = ({linenBags, setLinenBags}) => {
 
     function addBags(){
-        setLinenBags(prevLinenBags => prevLinenBags + 1)
+        setLinenBags(prevLinenBags => prevLinenBags + 1);
     }
 
-    let boltCount = linenBags > 0 && Math.floor(linenBags * 3)
-    let clothCount = linenBags > 0 && Math.floor(linenBags * 6)
-    let threadCount = linenBags > 0 && Math.floor(linenBags * COARSE_THREAD)
-    let bagPlural = linenBags > 1 ? 'Bags' : 'Bag'
+    function resetBags(){
+        setLinenBags(0);
+    }
+
+    const boltCount = linenBags > 0 && Math.floor(linenBags * 3);
+    const clothCount = linenBags > 0 && Math.floor(linenBags * 6);
+    const threadCount = linenBags > 0 && Math.floor(linenBags * BAGS.linen.threadCount);
+    const bagPlural = linenBags > 1 ? 'Bags' : 'Bag';
 
     return (
         <div className="mats-calc need-cloth">
@@ -32,6 +34,7 @@ export const BagsToCloth = () => {
                     <span className="lead">Buy:</span> <span className="value vendor">{threadCount}x Coarse Thread</span>
                 </div>
             }
+            <button className="reset" onClick={resetBags}>Clear</button>
         </div>
     )
 }
