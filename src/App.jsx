@@ -10,6 +10,8 @@ import { BAGS } from './constants.js';
 
 function App() {
 
+  const [faction,setFaction] = useState("");
+
   const [clothType,setClothType] = useState("");
 
   const [clothCount,setClothCount] = useState(0);
@@ -22,8 +24,10 @@ function App() {
   const threadCount = clothType != '' ? BAGS[propertyName].threadCount : '';
   const threadCost = clothType != '' ? BAGS[propertyName].threadCost : '';
   const coinage = threadCost === 1 ? 'sp' : 'cp';
-
+  
+  const bagSize = clothType != '' ? BAGS[propertyName].bagSize : '';
   const bagType = clothType === 'silk' ? 'pack' : 'bag';
+
 
   function chooseClothType(event) {
     setClothType(event.target.value);
@@ -35,11 +39,15 @@ function App() {
       setBagCount(0);
   }
 
+  function handleChangeFaction(event){
+    setFaction(event.target.className);
+  }
+
   return (
-      <section className="bag-calc">
-
-          <Header />
-
+      <main>
+        <Header handleChangeFaction={handleChangeFaction} faction={faction} />
+        <div className={`bag-calc ${clothType}`}>
+          <div className="bag-calc-inner">
           <form className="choose-cloth-type">
             <label htmlFor="clothType">What type of cloth bags do you want?</label>
             <select 
@@ -56,25 +64,23 @@ function App() {
 
           {clothType != '' && 
           <>
-            <div className="player-input">
-
+            <section className="calc-container">
                 <ClothToBags clothType={clothType} clothCount={clothCount} setClothCount={setClothCount} />
-
                 <BagsToCloth clothType={clothType} bagCount={bagCount} setBagCount={setBagCount} />
-                
-            </div>
+            </section>
             
-            <div className="mats">
+            <section className={`mats ${clothType}`}>
+                <p> {clothType} {bagType}: {bagSize} slots</p>
                 <p>1x bolt of {clothType} cloth = {clothMultiplier}x {clothType} cloth</p>
                 <p>1x {clothType} {bagType} = {boltMultiplier}x bolt of {clothType} cloth + {threadCount} {threadType}</p>
                 <p>1x {threadType}: {threadCost} {coinage}</p>
                 {/* <button onClick={resetAll}>Reset All</button> */}
-            </div>
+            </section>
             </>
           }
-
-
-      </section>
+        </div>
+      </div>
+    </main>
   )
 
 }

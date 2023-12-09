@@ -45,10 +45,13 @@
   var(--bluegem3) 50%, 
   var(--bluegem2) 75%, 
   var(--bluegem1) 100%);
+
+  --linen: #E9DCC9;
+  --wool: #a1abab;
+  --silk: #e78fc1;
 }
 
 #root {
-  max-width: 860px;
   margin: 0 auto;
   padding: 2rem;
   font-family: 'Inter', sans-serif;
@@ -67,9 +70,50 @@
 
 nav {
   margin-bottom:30px;
+  .nav-inner {
+    display:flex;
+    .button-wrapper {
+      display:flex;
+      gap:15px;
+      margin-left:auto;
+    }
+  }
 }
 
-.player-input {
+button {
+  cursor:pointer;
+}
+
+.bag-calc {
+  margin:0 auto;
+  max-width: 860px;
+  width:100%;
+
+  display: flex;
+  place-items: center;
+  min-height: 80vh;
+
+  &-inner {
+    width:100%;
+  }
+  &.linen {
+    color:var(--linen);
+  }
+  &.wool {
+    color:var(--wool);
+  }
+  &.silk {
+    color:var(--silk);
+  }
+}
+
+.choose-cloth-type {
+  display:flex;
+  gap:15px;
+  justify-content:center;
+}
+
+.calc-container {
   display:flex;
   flex-direction: column;
   justify-content: space-between;
@@ -88,57 +132,89 @@ nav {
     }
   }
 }
-.mats-calc {
-  margin: 0 auto;
+.calculator {
+  border: thin solid #fafafa;
+
+  margin: 50px auto 0;
   max-width:350px;
-  padding:10px 20px;
+  padding:20px;
   width:100%;
 
-  button {
-    // background: var(--gradientPink);
-    background:var(--pinkgem3);
-    border: 2px solid transparent;
-    border-bottom-color:var(--pinkgem5);
-    border-top-color:var(--pinkgem1);
-    border-left-color: var(--pinkgem2);
-    border-right-color: var(--pinkgem3);
-    border-radius: 4px;
-    // border: none;
-    color:black;
-    cursor:pointer;
-    font-size:12px;
-    margin:10px 0;
-    padding:8px 16px;
-    text-transform: capitalize;
-    // transition: .3s all ease-in-out;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
 
-    &:hover {
-      // border-bottom-color:var(--pinkgem1);
-      // border-top-color:var(--pinkgem5);
-      filter:grayscale(50%);
-    }
-
-    &.reset {
-      background:var(--gem3);
-      border-bottom-color:var(--gem5);
-      border-top-color:var(--gem1);
-      border-left-color: var(--gem2);
-      border-right-color: var(--gem3);
-    }
+  &.linen {
+    border-color:var(--linen);
   }
+  &.wool {
+    border-color:var(--wool);
+  }
+  &.silk {
+    border-color:var(--silk);
+  }
+
+  button.reset {
+    font-size:11px;
+    margin-left:auto;
+  }
+
+  // button {
+  //   // background: var(--gradientPink);
+  //   background:var(--pinkgem3);
+  //   border: 2px solid transparent;
+  //   border-bottom-color:var(--pinkgem5);
+  //   border-top-color:var(--pinkgem1);
+  //   border-left-color: var(--pinkgem2);
+  //   border-right-color: var(--pinkgem3);
+  //   border-radius: 4px;
+  //   // border: none;
+  //   color:black;
+  //   cursor:pointer;
+  //   font-size:12px;
+  //   margin:10px 0;
+  //   padding:8px 16px;
+  //   text-transform: capitalize;
+  //   // transition: .3s all ease-in-out;
+
+  //   &:hover {
+  //     // border-bottom-color:var(--pinkgem1);
+  //     // border-top-color:var(--pinkgem5);
+  //     filter:grayscale(50%);
+  //   }
+
+  //   &.reset {
+  //     background:var(--gem3);
+  //     border-bottom-color:var(--gem5);
+  //     border-top-color:var(--gem1);
+  //     border-left-color: var(--gem2);
+  //     border-right-color: var(--gem3);
+  //   }
+  // }
 
   @media screen and (min-width:768px){
     max-width:50%;
-    padding: 10px 30px 10px 0;
   }
 }
 
 .have-cloth,
 .need-cloth {
+  // background-image:url(https://wow.zamimg.com/images/wow/tooltip.png);
+  // background-position:center;
+  // border: 3px solid;
+  // border-image:url(https://wow.zamimg.com/images/wow/tooltip.png) 30;
   .actions {
     align-items: center;
     display:flex;
     gap:10px;
+
+    button, span {
+      text-transform: capitalize;
+    }
+
+    + .results {
+      margin-top:30px;
+    }
   }
 }
 .cloth-count, .bag-count {
@@ -152,6 +228,7 @@ nav {
   border: thin solid #fafafa;
   max-width:350px;
   margin: 20px auto;
+  text-transform:capitalize;
 
   display:flex;
   flex-direction: column;
@@ -164,6 +241,18 @@ nav {
     justify-content: space-between;
     margin:20px 0;
     max-width:100%;
+  }
+  &.linen {
+    color:var(--linen);
+    border-color:var(--linen);
+  }
+  &.wool {
+    color:var(--wool);
+    border-color:var(--wool);
+  }
+  &.silk {
+    color:var(--silk);
+    border-color:var(--silk);
   }
 }
 .value {
