@@ -12,27 +12,40 @@ function App() {
 
   const [clothType,setClothType] = useState("");
 
+  const [clothCount,setClothCount] = useState(0);
+  const [bagCount,setBagCount] = useState(0);
+
+  let propertyName = clothType;
+  const clothMultiplier = clothType != '' ? BAGS[propertyName].clothCount : '';
+  const boltMultiplier = clothType != '' ? BAGS[propertyName].boltCount : '';
+  const threadType = clothType != '' ? BAGS[propertyName].threadType : '';
+  const threadCount = clothType != '' ? BAGS[propertyName].threadCount : '';
+  const threadCost = clothType != '' ? BAGS[propertyName].threadCost : '';
+  const coinage = threadCost === 1 ? 'sp' : 'cp';
+
+  const bagType = clothType === 'silk' ? 'pack' : 'bag';
+
   function chooseClothType(event) {
-    console.log(event.target.value);
+    setClothType(event.target.value);
+    resetAll();
   }
 
-  const [linenCloth,setLinenCloth] = useState(0);
-  const [linenBags,setLinenBags] = useState(0);
-
   function resetAll(){
-      setLinenCloth(0);
-      setLinenBags(0);
+      setClothCount(0);
+      setBagCount(0);
   }
 
   return (
       <section className="bag-calc">
+
           <Header />
+
           <form className="choose-cloth-type">
             <label htmlFor="clothType">What type of cloth bags do you want?</label>
             <select 
               id="clothType" 
               value={clothType} 
-              onChange={chooseClothType}
+              onChange={chooseClothType} 
             >
               <option value="">- Choose -</option>
               <option value="linen">Linen Cloth</option>
@@ -40,21 +53,26 @@ function App() {
               <option value="silk">Silk Cloth</option>
             </select>
           </form>
-          <div className="player-input">
 
-              <ClothToBags linenCloth={linenCloth} setLinenCloth={setLinenCloth} />
+          {clothType != '' && 
+          <>
+            <div className="player-input">
 
-              <BagsToCloth linenBags={linenBags} setLinenBags={setLinenBags} />
-              
-          </div>
-          
-          <div className="mats">
-              <p>1x Bolt of {clothType} Cloth = {BAGS.clothCount}x {clothType} Cloth</p>
-              <p>1x {clothType} Bag = {BAGS.boltCount}x Bolt of Linen Cloth + {BAGS.threadCount} {BAGS.threadType}</p>
-              <p>1x Coarse Thread: 10cp</p>
-          </div>
+                <ClothToBags clothType={clothType} clothCount={clothCount} setClothCount={setClothCount} />
 
-          <button onClick={resetAll}>Reset All</button>
+                <BagsToCloth clothType={clothType} bagCount={bagCount} setBagCount={setBagCount} />
+                
+            </div>
+            
+            <div className="mats">
+                <p>1x bolt of {clothType} cloth = {clothMultiplier}x {clothType} cloth</p>
+                <p>1x {clothType} {bagType} = {boltMultiplier}x bolt of {clothType} cloth + {threadCount} {threadType}</p>
+                <p>1x {threadType}: {threadCost} {coinage}</p>
+                {/* <button onClick={resetAll}>Reset All</button> */}
+            </div>
+            </>
+          }
+
 
       </section>
   )

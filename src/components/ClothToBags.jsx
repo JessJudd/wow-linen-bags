@@ -1,41 +1,45 @@
-import { useState } from 'react'
-
 import { BAGS } from '../constants.js';
 
-export const ClothToBags = ({linenCloth, setLinenCloth}) => {
-
-    // const [linenCloth,setLinenCloth] = useState(0);
+export const ClothToBags = ({clothType, clothCount, setClothCount}) => {
 
     function addCloth(){
-        setLinenCloth(prevLinenCloth => prevLinenCloth + 1);
+        setClothCount(prevClothCount => prevClothCount + 1);
     }
 
     function resetCloth(){
-        setLinenCloth(0);
+        setClothCount(0);
     }
 
-    const boltCount = linenCloth > 1 && Math.floor(linenCloth / 2);
-    const bagCount = linenCloth > 5 && Math.floor(linenCloth / 6);
-    const threadCount = linenCloth > 5 && ((Math.floor(linenCloth / 6)) * BAGS.linen.threadCount);
-    const bagPlural = bagCount > 1 ? 'Bags' : 'Bag';
+    let propertyName = clothType;
+
+    const clothMultiplier = BAGS[propertyName].clothCount;
+    const clothPerBag = BAGS[propertyName].clothPerBag;
+    const threadCount = BAGS[propertyName].threadCount;
+    
+    const boltCount = clothCount > 1 && Math.floor(clothCount / clothMultiplier); 
+    const bagCount = clothCount > 5 && Math.floor(clothCount / clothPerBag); 
+    const isPlural = bagCount > 1 ? 's' : '';
+    
+    const threadType = BAGS[propertyName].threadType;
+    const threadTotal = clothCount > 5 && ((Math.floor(clothCount / clothPerBag)) * threadCount);
 
     return (
         <div className="mats-calc have-cloth">
-            <h2 className="heading">I have cloth.</h2>
-            <p className="subheading" >How many bags can I make?</p>
+            <h2 className="heading">I have {clothType} cloth.</h2>
+            <p className="subheading" >How many {clothType} bags can I make?</p>
             <div className="actions">
-                <button className="button-cloth" onClick={addCloth}>Add 1x Linen Cloth</button>
-                {linenCloth > 0 && <span className="cloth-count">{linenCloth}x Linen Cloth</span>}
+                <button className="button-cloth" onClick={addCloth}>Add 1x {clothType} Cloth</button>
+                {clothCount > 0 && <span className="cloth-count">{clothCount}x {clothType} Cloth</span>}
                 {boltCount > 0 && <span className="cloth-count">({boltCount}x Bolts)</span>}
             </div>
             {bagCount > 0 && 
                 <div className="results">
-                    <span className="lead">You can make:</span> <span className="value">{bagCount}x Linen {bagPlural}</span>
+                    <span className="lead">You can make:</span> <span className="value">{bagCount}x {clothType} bag{isPlural}</span>
                 </div>
             }
-            {threadCount > 0 && 
+            {threadTotal > 0 && 
                 <div className="results">
-                    <span className="lead">Buy:</span> <span className="value vendor">{threadCount} Coarse Thread</span>
+                    <span className="lead">Buy:</span> <span className="value vendor">{threadTotal} {threadType}</span>
                 </div>
             }
             <button className="reset" onClick={resetCloth}>Clear</button>
