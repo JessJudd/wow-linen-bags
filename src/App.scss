@@ -96,15 +96,6 @@ button {
   &-inner {
     width:100%;
   }
-  &.linen {
-    color:var(--linen);
-  }
-  &.wool {
-    color:var(--wool);
-  }
-  &.silk {
-    color:var(--silk);
-  }
 }
 
 .choose-cloth-type {
@@ -159,39 +150,6 @@ button {
     margin-left:auto;
   }
 
-  // button {
-  //   // background: var(--gradientPink);
-  //   background:var(--pinkgem3);
-  //   border: 2px solid transparent;
-  //   border-bottom-color:var(--pinkgem5);
-  //   border-top-color:var(--pinkgem1);
-  //   border-left-color: var(--pinkgem2);
-  //   border-right-color: var(--pinkgem3);
-  //   border-radius: 4px;
-  //   // border: none;
-  //   color:black;
-  //   cursor:pointer;
-  //   font-size:12px;
-  //   margin:10px 0;
-  //   padding:8px 16px;
-  //   text-transform: capitalize;
-  //   // transition: .3s all ease-in-out;
-
-  //   &:hover {
-  //     // border-bottom-color:var(--pinkgem1);
-  //     // border-top-color:var(--pinkgem5);
-  //     filter:grayscale(50%);
-  //   }
-
-  //   &.reset {
-  //     background:var(--gem3);
-  //     border-bottom-color:var(--gem5);
-  //     border-top-color:var(--gem1);
-  //     border-left-color: var(--gem2);
-  //     border-right-color: var(--gem3);
-  //   }
-  // }
-
   @media screen and (min-width:768px){
     max-width:50%;
   }
@@ -243,15 +201,12 @@ button {
     max-width:100%;
   }
   &.linen {
-    color:var(--linen);
     border-color:var(--linen);
   }
   &.wool {
-    color:var(--wool);
     border-color:var(--wool);
   }
   &.silk {
-    color:var(--silk);
     border-color:var(--silk);
   }
 }
@@ -283,17 +238,3 @@ button {
     display:initial;
   }
 }
-
-// .modeToggle {
-//   fieldset {
-//     border: none;
-//     display:flex;
-//     justify-content: space-between;
-//     margin:0;
-//     padding-left:0;
-//     padding-right:0;
-//   }
-//   input {
-//     margin: 0.4rem 0.4rem 0.4rem 0;
-//   }
-// }
