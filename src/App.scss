@@ -1,71 +1,17 @@
 :root {
-  --gem5:#165a4c;
-  --gem4:#239063;
-  --gem3:#1ebc73;
-  --gem2:#91db69;
-  --gem1:#cddf6c;
-
-  --pinkgem5:#c32454;
-  --pinkgem4: #f04f78;
-  --pinkgem3:#f68181;
-  --pinkgem2:#fca790;
-  --pinkgem1: #fdcbb0;
-
-  --bluegem5: #323353;
-  --bluegem4:#484a77;
-  --bluegem3: #4d65b4;
-  --bluegem2:#4d9be6;
-  --bluegem1: #8fd3ff;
-
-  /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#165a4c+0,1ebc73+100 */
-  --gradientGreen: linear-gradient(45deg,  
-  var(--gem5) 0%, 
-  var(--gem4) 25%, 
-  var(--gem3) 50%, 
-  var(--gem2) 75%, 
-  var(--gem1) 100%);
-
-  --gradientPink45: linear-gradient(45deg,  
-  var(--pinkgem5) 0%, 
-  var(--pinkgem4) 25%, 
-  var(--pinkgem3) 50%, 
-  var(--pinkgem2) 75%, 
-  var(--pinkgem1) 100%);
-  
-  --gradientPink: linear-gradient(45deg,  
-  var(--pinkgem5) 0%, 
-  var(--pinkgem4) 25%, 
-  var(--pinkgem3) 50%, 
-  var(--pinkgem2) 75%, 
-  var(--pinkgem1) 100%);
-
-  --gradientBlue: linear-gradient(0deg,  
-  var(--bluegem5) 0%, 
-  var(--bluegem4) 25%, 
-  var(--bluegem3) 50%, 
-  var(--bluegem2) 75%, 
-  var(--bluegem1) 100%);
-
   --linen: #E9DCC9;
   --wool: #a1abab;
   --silk: #e78fc1;
+
+  --textDark: #1d1d1d;
+  --textLight: #fafafa;
 }
 
 #root {
   margin: 0 auto;
   padding: 2rem;
-  font-family: 'Inter', sans-serif;
   width:100%;
-}
-
-.gradient-bar {
-  height:3px;
-  margin-bottom:10px;
-  background: var(--gradientPink45);
-}
-
-.heading {
-  font-family: 'Potta One', sans-serif;
+  font-family: 'Lexend', sans-serif;
 }
 
 nav {
@@ -84,6 +30,29 @@ button {
   cursor:pointer;
 }
 
+.choose-cloth-type {
+  display:flex;
+  gap:20px;
+  .cloth-types {
+    min-width:150px;
+  }
+  .cloth-type-label {
+    padding-left:10px;
+  }
+  .cloth-count-label,
+  .bag-count-label {
+    padding-right:10px;
+  }
+  input.count {
+    max-width:50px;
+    text-align: center;
+  }
+}
+
+
+
+/* old */
+
 .bag-calc {
   margin:0 auto;
   max-width: 860px;
@@ -98,22 +67,24 @@ button {
   }
 }
 
-.choose-cloth-type {
-  display:flex;
-  gap:15px;
-  justify-content:center;
-}
+// .choose-cloth-type {
+//   display:flex;
+//   gap:15px;
+//   justify-content:center;
+//   .cloth-types {
+//     display:flex;
+//     gap:10px;
+//   }
+// }
 
 .calc-container {
+  align-items:center;
   display:flex;
   flex-direction: column;
   justify-content: space-between;
   
   @media screen and (min-width:768px){
     display:flex;
-    flex-direction: row;
-    gap:20px;
-    justify-content: space-between;
   }
   
   .results{
@@ -123,10 +94,9 @@ button {
     }
   }
 }
+
 .calculator {
   border: thin solid #fafafa;
-
-  margin: 50px auto 0;
   max-width:350px;
   padding:20px;
   width:100%;
@@ -134,6 +104,8 @@ button {
   display:flex;
   flex-direction:column;
   gap:10px;
+
+  margin:0 auto;
 
   &.linen {
     border-color:var(--linen);
@@ -153,14 +125,20 @@ button {
   @media screen and (min-width:768px){
     max-width:50%;
   }
+
+  fieldset {
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  input.count {
+    max-width:62px;
+  }
 }
 
 .have-cloth,
 .need-cloth {
-  // background-image:url(https://wow.zamimg.com/images/wow/tooltip.png);
-  // background-position:center;
-  // border: 3px solid;
-  // border-image:url(https://wow.zamimg.com/images/wow/tooltip.png) 30;
   .actions {
     align-items: center;
     display:flex;
@@ -177,6 +155,19 @@ button {
 }
 .cloth-count, .bag-count {
   font-size:12px;
+}
+
+.have-cloth {
+  color: var(--textDark);
+  &.linen {
+    background-color:var(--linen);
+  }
+  &.wool {
+    background-color:var(--wool);
+  }
+  &.silk {
+    background-color:var(--silk);
+  }
 }
 
 .mats {
@@ -213,16 +204,15 @@ button {
 .value {
   text-decoration:underline;
   text-decoration-style:dotted;
-
   margin-left: auto;
-  &.vendor {
-    color: silver;
-  }
 }
 .results.many {
   justify-content: space-between;
   .value {
     margin-left: unset;
+  }
+  + .results.leather {
+    margin-top:0;
   }
 }
 
