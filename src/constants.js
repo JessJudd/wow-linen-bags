@@ -2,7 +2,7 @@ export const BAGS = {
     linen: {
         bagSize: 6,
         clothPerBag: 6,
-        clothCount: 2,
+        clothPerBolt: 2,
         boltCount: 3,
         threadCount: 3, 
         threadType: 'coarse thread',
@@ -11,7 +11,7 @@ export const BAGS = {
     wool: {
         bagSize: 8,
         clothPerBag: 9,
-        clothCount: 3,
+        clothPerBolt: 3,
         boltCount: 3,
         threadCount: 1,
         threadType: 'fine thread',
@@ -20,7 +20,7 @@ export const BAGS = {
     silk: {
         bagSize: 10,
         clothPerBag: 12,
-        clothCount: 4,
+        clothPerBolt: 4,
         boltCount: 3,
         threadCount: 3,
         threadType: 'fine thread',
