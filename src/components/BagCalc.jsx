@@ -27,10 +27,10 @@ export const BagCalc = ({clothData}) => {
         <div className={`calculator ${clothType}`}>
 
             
-            <div classname="crafting">
-                {clothType} {bagType} x {bagCount} ({craftBags})<br />
+            <div className="crafting">
+                {clothType} {bagType} x <span className="count">{bagCount}</span><br />
                 {/* ? / {BAGS[clothType].boltCount} Bolt of {clothType} Cloth<br /> */}
-                {clothCount} / {BAGS[clothType].clothPerBag} {clothType} cloth ({BAGS[clothType].boltCount} bolts per {bagType})<br />
+                <span className="count">{clothCount}</span> / { bagCount > 1 ? bagCount * BAGS[clothType].clothPerBag : BAGS[clothType].clothPerBag } {clothType} cloth<br />
                 {bagCount > 0 ? BAGS[clothType].threadCount * bagCount : BAGS[clothType].threadCount} {threadType}
             </div>
 

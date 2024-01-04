@@ -48,7 +48,7 @@ export const Form = ({clothData, handleChangeCloth, addBag, addCloth, resetCloth
                     type="text" 
                     name="clothCount" 
                     onChange={handleChangeCloth} 
-                    value={clothCount} 
+                    value={clothData.clothCount} 
                     id="clothCount"
                 />
                 <button className="button-cloth" onClick={addCloth}>Add 1x {clothType} Cloth</button>
@@ -60,7 +60,7 @@ export const Form = ({clothData, handleChangeCloth, addBag, addCloth, resetCloth
                     type="text" 
                     name="bagCount" 
                     onChange={handleChangeCloth} 
-                    value={bagCount} 
+                    value={clothData.bagCount} 
                     id="bagCount"
                 />
                 <br /><button className="button-bags" onClick={(e)=>addBag(e)}>Add 1x Bag</button>

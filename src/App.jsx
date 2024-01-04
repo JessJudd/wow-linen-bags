@@ -21,10 +21,8 @@ function App() {
   const [clothData, setClothData] = useState({
     clothType: 'linen',
     clothCount: 0,
-    bagCount: 0
+    bagCount: 1
   });
-
-  const { clothType } = clothData;
 
   function handleChangeCloth(event){
     
@@ -43,18 +41,18 @@ function App() {
   function addBag(event){
     event.preventDefault();
 
-    console.log('clicked bag');
+    console.log(`clicked addBag ${clothData.bagCount}`);
 
     setClothData(prevClothData => {
 
       return {
         ...prevClothData,
-        bagCount: prevClothData.bagCount++
+        bagCount: prevClothData.bagCount + 1
       }
 
     });
 
-    console.log(clothData.bagCount);
+    console.log(`addBag ${clothData.bagCount}`);
   }
 
   function addCloth(event){
@@ -67,14 +65,14 @@ function App() {
       console.log(`cloth count ${prevClothData.clothCount}`);
       return {
         ...prevClothData,
-        clothCount: prevClothData.clothCount++
+        clothCount: prevClothData.clothCount + 1
       }
 
     });
   }
   
-  const bagSize = clothType != '' ? BAGS[clothType].bagSize : '';
-  const bagType = clothType === 'silk' ? 'pack' : 'bag';
+  const bagSize = clothData.clothType != '' ? BAGS[clothData.clothType].bagSize : '';
+  const bagType = clothData.clothType === 'silk' ? 'pack' : 'bag';
 
   function resetCloth(event){
     event.preventDefault();
@@ -83,7 +81,7 @@ function App() {
 
       return {
         clothType: 'linen',
-        bagCount: 0,
+        bagCount: 1,
         clothCount: 0,
       }
 
@@ -94,10 +92,13 @@ function App() {
     setFaction(event.target.className);
   }
 
+  console.log('app rendered');
+  console.log(`bagCount ${clothData.bagCount}`);
+
   return (
       <main>
         <Header handleChangeFaction={handleChangeFaction} faction={faction} />
-        <div className={`bag-calc ${clothType}`}>
+        <div className={`bag-calc ${clothData.clothType}`}>
           <div className="bag-calc-inner">
 
             <Form 
@@ -111,7 +112,7 @@ function App() {
             <BagCalc clothData={clothData} />
 
             {clothData.clothType != '' && 
-              <Materials clothType={clothType} />
+              <Materials clothType={clothData.clothType} />
             }
         </div>
       </div>
