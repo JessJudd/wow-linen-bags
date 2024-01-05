@@ -1,31 +1,86 @@
-export const BAGS = {
-    linen: {
+export const BAGS_DATA = [
+    {
+        id: 4238,
+        clothType: 'linen',
+        bagName: 'bag',
         bagSize: 6,
-        clothPerBag: 6,
-        clothPerBolt: 2,
-        boltCount: 3,
-        threadCount: 3, 
-        threadType: 'coarse thread',
-        threadCost: 10, // cp
+        reagents: [
+            {
+                id: 2589,
+                name: 'cloth',
+                type: 'linen',
+                count: 6, 
+                perBolt: 3,
+                bolt: {
+                    id: 2996,
+                    count: 2,
+                }
+            },
+            {
+                id: 2320,
+                name: 'thread',
+                type: 'coarse',
+                count: 3, 
+                price: 10 // cp
+            }
+        ],
     },
-    wool: {
+    {
+        id: 4240,
+        clothType: 'wool',
+        bagName: 'bag',
         bagSize: 8,
-        clothPerBag: 9,
-        clothPerBolt: 3,
-        boltCount: 3,
-        threadCount: 1,
-        threadType: 'fine thread',
-        threadCost: 1, // sp
+        reagents: [
+            {
+                id: 2592,
+                name: 'cloth',
+                type: 'wool',
+                count: 9, 
+                perBolt: 3,
+                bolt: {
+                    id: 2997,
+                    count: 3,
+                }
+            },
+            {
+                id: 2321,
+                name: 'thread',
+                type: 'fine',
+                count: 1,
+                price: 1 // sp
+            }
+        ]
     },
-    silk: {
+    {
+        id: 4245,
+        clothType: 'silk',
+        bagName: 'pack',
         bagSize: 10,
-        clothPerBag: 12,
-        clothPerBolt: 4,
-        boltCount: 3,
-        threadCount: 3,
-        threadType: 'fine thread',
-        threadCost: 1, // sp
-        leatherPerBag: 2,
-        leatherType: 'heavy'
+        reagents: [
+            {
+                id: 4306,
+                name: 'cloth',
+                type: 'silk',
+                count: 12, 
+                perBolt: 4,
+                bolt: {
+                    id: 4305,
+                    count: 3
+                }
+            },
+            {
+                id: 4234,
+                name: 'leather',
+                type: 'heavy',
+                count: 2
+            },
+            {
+                id: 2321,
+                name: 'thread',
+                type: 'fine',
+                count: 3,
+                price: 1, // sp
+            },
+        ]
     },   
-}
+]

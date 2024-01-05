@@ -56,7 +56,11 @@ form {
 }
 
 ul {
+  padding:15px;
   list-style-type:none;
+  li + li {
+    margin-top:8px;
+  }
 }
 
 .bag-calc {
@@ -66,11 +70,11 @@ ul {
   margin:0 auto;
   &-inner {
     display:grid;
-    grid-template-columns:repeat(3,1fr);
+    grid-template-columns:repeat(4,1fr);
     gap:15px;
     width:100%;
     .container:nth-of-type(2){
-      grid-column: 2 / span 2;
+      grid-column: 2 / span 3;
     }
   }
 }
@@ -79,16 +83,23 @@ ul {
   border: thin solid grey;
   border-radius:3px;
   padding: 2em;
+
+  h4 {
+    padding-bottom:15px;
+  }
 }
 
 .recipe {
   border-top: thin solid silver;
-  margin-top:15px;
+  padding:15px 0;
+  &:last-of-type {
+    border-bottom: thin solid silver;
+  }
   &-header {
     align-items: center;
     display:flex;
     gap:15px;
-    padding:15px 0;
+    padding: 15px 0;
   }
   &-icon {
     background-color:#1d1d1d;
@@ -100,18 +111,20 @@ ul {
 }
 .recipe-reagents {
   display:grid;
-  grid-template-columns:repeat(3,1fr);
+  grid-template-columns:repeat(4,1fr);
   grid-auto-rows: minmax(50px, auto);
+  padding: 0 0 15px 0;
 }
 .reagent {
   display:flex;
   gap:15px;
   align-items: center;
   &-count {
-    position:absolute;
-    z-index:2;
     bottom: 0px;
+    font-size:14px;
+    position:absolute;
     right: 5px;
+    z-index:2;
   }
   &-icon {
     background-color:#1d1d1d;
