@@ -9,14 +9,19 @@ export const Recipe = ({recipe, show}) => {
             key={reagent.id} 
             reagent={reagent} 
             clothType={clothType}
+            parent='recipe'
+            img={`${reagent.name}_${reagent.type}.jpg`}
         />
     });
 
+    const imgPath = `../assets/${bagName}_${clothType}.jpg`;
+    const imgUrl = new URL(imgPath, import.meta.url).href;
+
     return (
         show != false &&
-        <div className="recipe"> 
+        <div className="recipe-single"> 
             <div className="recipe-header">
-                <img className="recipe-icon" />
+                <img className="recipe-icon" src={imgUrl} />
                 <span className="recipe-name">{clothType} {bagName}</span>
             </div>
             

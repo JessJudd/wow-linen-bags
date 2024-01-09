@@ -1,8 +1,8 @@
-import { BAGS_DATA } from '../constants.js';
+import { BAGS_DATA } from '../BAGS_DATA.js';
 
 import { Recipe } from './Recipe.jsx';
 
-export const Recipes = ({clothData}) => {
+export const Recipes = () => {
 
     const recipeList = BAGS_DATA.map((recipe) => {
 

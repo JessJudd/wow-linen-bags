@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { BAGS_DATA } from './constants.js';
+import { BAGS_DATA } from './BAGS_DATA.js';
 
 import { Header } from './components/Header.jsx';
 import { Inventory } from './components/Inventory.jsx';
@@ -11,24 +11,34 @@ function App() {
 
   const [faction,setFaction] = useState("");
 
-  const [clothData, setClothData] = useState({
+  const [inventoryData, setInventoryData] = useState({
     linen: {
-      clothCount: 0,
-      bagCount: 0,
+      clothCount: 42,
+      bagCount: 0
     },
     wool: {
-      clothCount: 0,
-      bagCount: 0,
+      clothCount: 20,
+      bagCount: 0
     },
     silk: {
-      clothCount: 0,
-      leatherCount: 0,
-      bagCount:0,
+      clothCount: 6,
+      bagCount:0
+    },
+    leather: {
+      count: 0,
+    },
+    thread: {
+      coarseCount: 0,
+      fineCount: 0
     }
   });
   
   function handleChangeFaction(event){
     setFaction(event.target.className);
+  }
+
+  function handleUpdateInventory(){
+
   }
 
   let factionClass = faction != '' ? `faction ${faction}` : '';
@@ -39,8 +49,8 @@ function App() {
         <div className={`bag-calc`}>
           <div className="bag-calc-inner">
 
-            <Inventory />
-            <Recipes clothData={clothData} />
+            <Inventory inventoryData={inventoryData} />
+            <Recipes />
             
         </div>
       </div>

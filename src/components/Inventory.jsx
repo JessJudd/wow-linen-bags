@@ -1,60 +1,49 @@
-import { BAGS_DATA } from '../constants.js';
+import { BAGS_DATA } from '../BAGS_DATA.js';
+import { ALL_REAGENTS } from '../ALL_REAGENTS.js';
 
 import { Reagent } from './Reagent.jsx';
 
-export const Inventory = () => {
+// note from Jandy 11 -> clicky the reagent to "add" to inventory,  need a new inventory section
 
-    let uniqueReagents = [];
-    let newReagents;
+export const Inventory = ({inventoryData}) => {
 
-    const reagentElements = BAGS_DATA.map((recipe) => {
+    const reagentElements = ALL_REAGENTS.map((reagent) => {
+        const { id, name, type } = reagent;
 
-        const { id, clothType, reagents } = recipe;
+        const fetchInventoryReagent = name == 'cloth' || name == 'bolt' ? inventoryData[type] : inventoryData[name];
 
-        // reagents.forEach(r => {
-        //     if(!allReagents.find(item => item.id === r.id)){
-        //         allReagents.push(r);
-        //     }
-        // });
+        let inventoryReagent;
+        let reagentCount;
 
-        uniqueReagents.push(...reagents);
-        
-        for (const r of reagents) {
-            if (!containsReagent(uniqueReagents, r)) {
-                uniqueReagents.push(r);
-            }
+        switch(name) {
+            case 'cloth':
+                inventoryReagent = inventoryData[type];
+                reagentCount = inventoryReagent.clothCount;
+                console.log(`[Inventory.jsx] ${name} ${reagentCount}`);
+            break;
+            case 'leather':
+                inventoryReagent = inventoryData[name];
+                reagentCount = inventoryReagent.count;
+                console.log(`[Inventory.jsx] ${name} ${reagentCount}`);
+            break;
+            case 'thread':
+                inventoryReagent = inventoryData[name];
+                reagentCount = inventoryReagent[`${type}Count`];
+                console.log(`[Inventory.jsx] ${name} ${reagentCount}`);
+            break;
         }
+        // replace the switch with CONTEXT???? https://react.dev/learn/passing-data-deeply-with-context
 
-        // console.log(allReagents.length);
-
-
-        // const fetchReagents = allReagents.map((reagent) => {
-        // const fetchReagents = reagents.map((reagent) => {
-        //     // console.log(reagent.name);
-            
-            
-        //     return <Reagent 
-        //         key={reagent.id} 
-        //         reagent={reagent} 
-        //         clothType={clothType}
-        //     />
-        // });
-
-        // return fetchReagents;
-
-        return newReagents;
-
+        return <Reagent 
+            key={id} 
+            reagent={reagent} 
+            clothType={type} 
+            parent='inventory' 
+            img={`${name}_${type}.jpg`} 
+            count={reagentCount}
+        />
     });
 
-    
-
-    function containsReagent(reagentArray, reagent) {
-        return reagentArray.find(
-            (r) => r.id === reagent.id
-        );
-    }
-
-    
     return (
         <section className="inventory container">
             <h4>Inventory</h4>
@@ -62,27 +51,10 @@ export const Inventory = () => {
 
                 {reagentElements}
 
-                {/* <div className="reagent">
-                    <figure className="reagent-icon-container">
-                        <img className="reagent-icon" />
-                        <span className="reagent-count">0</span>
-                    </figure>
-                    <span className="reagent-name">Linen Cloth</span>
-                </div>
-                <div className="reagent">
-                    <figure className="reagent-icon-container">
-                        <img className="reagent-icon" />
-                        <span className="reagent-count">0</span>
-                    </figure>
-                    <span className="reagent-name">Wool Cloth</span>
-                </div>
-                <div className="reagent">
-                    <figure className="reagent-icon-container">
-                        <img className="reagent-icon" />
-                        <span className="reagent-count">0</span>
-                    </figure>
-                    <span className="reagent-name">Silk Cloth</span>
-                </div> */}
+            </div>
+            <div className="inventory-controls">
+                <button className="edit-inv">Bulk Edit</button>
+                <button className="reset-inv">Reset All</button>
             </div>
         </section>
     )

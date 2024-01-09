@@ -9,12 +9,14 @@
   --hordeRed: #8C1616;
   --allyBlue: #000480;
   --forsakenPurple: #695975;
+
+  --border: thin solid grey;
 }
 
 #root {
   margin: 0 auto;
   width:100%;
-  font-family: 'Lexend', sans-serif;
+  // font-family: 'Lexend', sans-serif;
 }
 
 main {
@@ -47,7 +49,16 @@ nav {
 }
 
 button {
-  cursor:pointer;
+  -webkit-appearance: none;
+  border-radius: 0;
+  text-align: inherit;
+  background: none;
+  box-shadow: none;
+  padding: 0;
+  cursor: pointer;
+  border: none;
+  color: inherit;
+  font: inherit;
 }
 
 section,
@@ -80,28 +91,26 @@ ul {
 }
 
 .container {
-  border: thin solid grey;
+  border: var(--border);
   border-radius:3px;
   padding: 2em;
 
   h4 {
     padding-bottom:15px;
+    border-bottom: var(--border);
   }
 }
 
-.recipe {
-  border-top: thin solid silver;
+.recipe-single {
   padding:15px 0;
-  &:last-of-type {
-    border-bottom: thin solid silver;
-  }
-  &-header {
+  border-bottom: var(--border);
+  .recipe-header {
     align-items: center;
     display:flex;
     gap:15px;
     padding: 15px 0;
   }
-  &-icon {
+  .recipe-icon {
     background-color:#1d1d1d;
     border-radius:5px;
     border: 1px solid gold;
@@ -116,9 +125,21 @@ ul {
   padding: 0 0 15px 0;
 }
 .reagent {
+  align-items: center;
+  
   display:flex;
   gap:15px;
-  align-items: center;
+
+  &.inventory {
+    cursor:pointer;
+    .reagent-icon {
+      filter:saturate(10%);
+      &.in-stock {
+        filter:saturate(100%);
+      }
+    }
+  }
+
   &-count {
     bottom: 0px;
     font-size:14px;
@@ -132,7 +153,7 @@ ul {
     border: 1px solid silver;
     height:50px;
     position:absolute;
-    width:50px;;
+    width:50px;
   }
   &-icon-container {
     display:flex;
@@ -143,11 +164,19 @@ ul {
   }
 }
 
-.inventory-reagents {
-  display:flex;
-  flex-direction: column;
-  gap:15px;
-  padding: 15px 0;
+.inventory {
+  &-reagents {
+    display:flex;
+    flex-direction: column;
+    gap:15px;
+    padding: 15px 0;
+  }
+  &-controls {
+    border-top:var(--border);
+    display:flex;
+    justify-content: space-between;
+    padding-top:15px;
+  }
 }
 
 
