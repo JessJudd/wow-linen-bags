@@ -11,12 +11,11 @@ export const Reagent = ({clothType, reagent, parent, img, count }) => {
     return (
         <div className={className}>
             <figure className="reagent-icon-container">
-                <img className="reagent-icon" src={imgUrl} />
+            {parent != 'all' && <span className="reagent-count">{count}</span>}
                 <img className={`reagent-icon ${count > 1 ? "in-stock" : "" }`} src={imgUrl} />
-                <span className="reagent-count">{count}</span>
             </figure>
             
-            <span className="reagent-name">{reagentName}</span>
+            {parent != 'all' && <span className="reagent-name">{reagentName}</span>}
             
         </div>
     )

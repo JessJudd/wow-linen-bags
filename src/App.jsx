@@ -24,6 +24,9 @@ function App() {
           <div className="bag-calc-inner">
 
             <Inventory />
+            <section className="newBags container">
+              <h1>New Bags here</h1>
+            </section>
             <Recipes />
             
         </div>

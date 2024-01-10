@@ -11,13 +11,13 @@ export const Inventory = () => {
 
     const [inventoryData, setInventoryData] = useState({
         linen: { 
-          count: 42,
+          count: 0,
         },
         wool: {
-          count: 20,
+          count: 0,
         },
         silk: {
-          count: 6,
+          count: 0,
         },
         leather: {
           heavy: {
@@ -34,6 +34,27 @@ export const Inventory = () => {
         }
     });
 
+    const inventoryElements = ALL_REAGENTS.map((reagent) => {
+      const { id, name, type } = reagent;
+
+      const fetchInventoryReagent = name == 'cloth' ? inventoryData[type] : inventoryData[name][type];
+
+      let reagentCount = fetchInventoryReagent.count;
+
+      return reagentCount > 0 && <Reagent 
+          key={id} 
+          reagent={reagent} 
+          clothType={type} 
+          parent='inventory' 
+          img={`${name}_${type}.jpg`} 
+          count={reagentCount}
+      />
+    });
+
+    function addReagent(){
+      console.log(`clicked!`);
+    }
+
     const reagentElements = ALL_REAGENTS.map((reagent) => {
         const { id, name, type } = reagent;
 
@@ -45,23 +66,25 @@ export const Inventory = () => {
             key={id} 
             reagent={reagent} 
             clothType={type} 
-            parent='inventory' 
+            parent='all' 
             img={`${name}_${type}.jpg`} 
             count={reagentCount}
+            onClick={addReagent}
         />
     });
 
     return (
         <section className="inventory container">
             <h4>Inventory</h4>
-            <div className="inventory-reagents">
-
-                {reagentElements}
-
+            <div className="user-reagents">
+              {inventoryElements}
+            </div>
+            <div className="all-reagents">
+              {reagentElements}
             </div>
             <div className="inventory-controls">
-                <button className="edit-inv">Bulk Edit</button>
-                <button className="reset-inv">Reset All</button>
+              <button className="edit-inv">Bulk Edit</button>
+              <button className="reset-inv">Reset All</button>
             </div>
         </section>
     )
