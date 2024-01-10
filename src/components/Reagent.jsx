@@ -1,8 +1,6 @@
-export const Reagent = ({clothType, reagent, parent, img, reagentCount }) => {
+export const Reagent = ({clothType, reagent, parent, img, count }) => {
 
-    const { name, count, type } = reagent;
-
-    console.log(`[Reagent.jsx] ${reagentCount}`);
+    const { name, type } = reagent;
 
     const imgPath = `../assets/${img}`;
     const imgUrl = new URL(imgPath, import.meta.url).href;
@@ -14,7 +12,8 @@ export const Reagent = ({clothType, reagent, parent, img, reagentCount }) => {
         <div className={className}>
             <figure className="reagent-icon-container">
                 <img className="reagent-icon" src={imgUrl} />
-                <span className="reagent-count">{parent == 'recipe' ? count : reagentCount}</span>
+                <img className={`reagent-icon ${count > 1 ? "in-stock" : "" }`} src={imgUrl} />
+                <span className="reagent-count">{count}</span>
             </figure>
             
             <span className="reagent-name">{reagentName}</span>

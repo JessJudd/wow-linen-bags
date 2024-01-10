@@ -11,6 +11,7 @@ export const Recipe = ({recipe, show}) => {
             clothType={clothType}
             parent='recipe'
             img={`${reagent.name}_${reagent.type}.jpg`}
+            count={reagent.count}
         />
     });
 

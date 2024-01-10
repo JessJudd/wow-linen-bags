@@ -102,6 +102,8 @@ ul {
 }
 
 .recipe-single {
+  // background-color:palegreen;
+
   padding:15px 0;
   border-bottom: var(--border);
   .recipe-header {
@@ -125,8 +127,8 @@ ul {
   padding: 0 0 15px 0;
 }
 .reagent {
+  // background-color:pink;
   align-items: center;
-  
   display:flex;
   gap:15px;
 

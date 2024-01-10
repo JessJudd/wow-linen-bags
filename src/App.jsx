@@ -10,35 +10,9 @@ import './App.scss'
 function App() {
 
   const [faction,setFaction] = useState("");
-
-  const [inventoryData, setInventoryData] = useState({
-    linen: {
-      clothCount: 42,
-      bagCount: 0
-    },
-    wool: {
-      clothCount: 20,
-      bagCount: 0
-    },
-    silk: {
-      clothCount: 6,
-      bagCount:0
-    },
-    leather: {
-      count: 0,
-    },
-    thread: {
-      coarseCount: 0,
-      fineCount: 0
-    }
-  });
   
   function handleChangeFaction(event){
     setFaction(event.target.className);
-  }
-
-  function handleUpdateInventory(){
-
   }
 
   let factionClass = faction != '' ? `faction ${faction}` : '';
@@ -49,7 +23,7 @@ function App() {
         <div className={`bag-calc`}>
           <div className="bag-calc-inner">
 
-            <Inventory inventoryData={inventoryData} />
+            <Inventory />
             <Recipes />
             
         </div>
