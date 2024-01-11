@@ -1,6 +1,6 @@
 export const Header = ({faction,handleChangeFaction}) => {
     return (
-        <nav>
+        <nav className="header">
             {/* <div className="gradient-bar"></div> */}
             <div className="nav-inner">
                 <h1 className="heading">{faction == 'alliance' ? 'Sindaheri' : 'Saraneth' }'s Salacious Satchels</h1>
