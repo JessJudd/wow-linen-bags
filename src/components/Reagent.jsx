@@ -1,5 +1,6 @@
+import { MdClose } from 'react-icons/md';
+
 export const Reagent = ({clothType, count, inventory, img, reagent, onClick, parent }) => {
-    console.log('reagent->inventory: ', inventory);
     const { name, type } = reagent;
 
     const imgPath = `../assets/${img}`;

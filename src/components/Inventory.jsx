@@ -1,13 +1,8 @@
-import { useState } from 'react';
-
-// import { BAGS_DATA } from '../BAGS_DATA.js';
 import { ALL_REAGENTS } from '../ALL_REAGENTS.js';
 
 import { Reagent } from './Reagent.jsx';
 
-// note from Jandy 11 -> clicky the reagent to "add" to inventory,  need a new inventory section
-
-export const Inventory = ({inventoryData,setInventoryData, resetAll}) => {
+export const Inventory = ({inventoryData,setInventoryData, resetReagentCount, resetAll}) => {
 
   const inventoryElements = ALL_REAGENTS.map((reagent) => {
     const { name, type } = reagent;

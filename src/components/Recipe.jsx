@@ -1,9 +1,12 @@
+import { MdClose } from 'react-icons/md';
 import { Reagent } from './Reagent.jsx';
 
-export const Recipe = ({recipe, showMaterials, onClick, count, parent, bagCount, inventory}) => {
+export const Recipe = ({ recipe, showMaterials, onClick, count, parent, bagCount, inventory, resetBagCount }) => {
+    console.log('parent: ', parent);
+    console.log('count: ', count);
     const { clothType, bagName, reagents } = recipe;
     
-    console.log('recipe->inventory: ', inventory);
+    console.log('bagCount: ', bagCount);
 
     function fetchRecipeCount(reagent){
         console.log('reagent: ', reagent.name);
@@ -37,15 +40,15 @@ export const Recipe = ({recipe, showMaterials, onClick, count, parent, bagCount,
     let recipeClass = `recipe-single ${parent}`;
 
     return (
-        <div className={recipeClass} onClick={onClick}> 
+        <div className={recipeClass}> 
             <div className="recipe-header">
-                <div className="recipe-icon-container">
+                <div className="recipe-icon-container" onClick={onClick}>
                     <span className="bag-count">
                         { bagCount ? <span className="num">{bagCount}</span> : <span className="num">{count}</span>}
                     </span> 
                     <img className="recipe-icon" src={imgUrl} />
                 </div>
-                <span className="recipe-name">{clothType} {bagName}</span>
+                <span className="recipe-name">{clothType} {bagName}</span> {(bagCount > 0 && parent == 'menu') && <span className="reset-bag-count-icon" onClick={resetBagCount}><MdClose color="red" size="1.5em" /></span>}
             </div>
             {showMaterials != false && <div className="recipe-reagents">
                 { reagentElements }

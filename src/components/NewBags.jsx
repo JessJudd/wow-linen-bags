@@ -1,8 +1,7 @@
 import { BAGS_DATA } from '../BAGS_DATA.js';
-
 import { Recipe } from './Recipe.jsx';
 
-export const NewBags = ({needBags, setNeedBags}) => {
+export const NewBags = ({needBags, setNeedBags, resetBagCount}) => {
 
     function addBag(recipe) {
         const { clothType } = recipe;
@@ -19,7 +18,7 @@ export const NewBags = ({needBags, setNeedBags}) => {
 
     const listBags = BAGS_DATA.map((recipe) => {
         let fetchBag = needBags[recipe.clothType];
-        let count = fetchBag.count;
+        let bagCount = fetchBag.count;
 
         return (
             <Recipe 
@@ -27,9 +26,10 @@ export const NewBags = ({needBags, setNeedBags}) => {
                 recipe={recipe} 
                 showMaterials={false}
                 onClick={() => addBag(recipe)} 
-                count={count} 
+                bagCount={bagCount} 
                 showCount={true} 
                 parent="menu"
+                resetBagCount={()=> resetBagCount(recipe)}
             />
         )
     });

@@ -41,6 +41,10 @@ function App() {
     setFaction(event.target.className);
   }
 
+  function resetReagentCount(){
+
+  }
+
   function resetAll(){
     console.log('resetting inventory');
     setInventoryData(prevInventoryData => inventory);
@@ -56,6 +60,7 @@ function App() {
             <Inventory 
               inventoryData={inventoryData} 
               setInventoryData={setInventoryData} 
+              resetReagentCount={resetReagentCount} 
               resetAll={resetAll} 
             />
             <Crafting inventoryData={inventoryData} />

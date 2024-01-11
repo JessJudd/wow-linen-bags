@@ -21,6 +21,16 @@ export const Crafting = ({inventoryData}) => {
     }
     const [needBags,setNeedBags] = useState(bags);
 
+    function resetBagCount(recipe){
+        console.log('recipe: ', recipe);
+        setNeedBags(prevNeedBags => ({
+            ...prevNeedBags,
+            [recipe.clothType]: {
+                count: 0
+            }
+        }));
+    }
+
     const recipeElements = BAGS_DATA.map((recipe) => {
 
         let bagCount = needBags[recipe.clothType];
@@ -31,7 +41,7 @@ export const Crafting = ({inventoryData}) => {
                 key={recipe.id} 
                 recipe={recipe} 
                 showMaterials={true} 
-                parent="menu" 
+                parent="recipe" 
                 bagCount={bagCount.count} 
                 inventory={inventoryData}
             />
@@ -40,7 +50,11 @@ export const Crafting = ({inventoryData}) => {
 
     return (
         <section className="crafting container">
-            <NewBags needBags={needBags} setNeedBags={setNeedBags} />
+            <NewBags 
+                needBags={needBags} 
+                setNeedBags={setNeedBags} 
+                resetBagCount={resetBagCount} 
+            />
             <div className="recipes">
                 <h4>Recipes</h4>
                 {recipeElements}
