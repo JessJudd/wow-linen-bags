@@ -1,12 +1,25 @@
+import { useContext } from 'react';
+import { InventoryContext } from '../helper/Context.jsx';
+
 import { ALL_REAGENTS } from '../ALL_REAGENTS.js';
 
 import { Reagent } from './Reagent.jsx';
 
-export const Inventory = ({inventoryData,setInventoryData, resetReagentCount, resetAll}) => {
+
+export const Inventory = ({resetAll}) => {
+
+  const { inventoryData, setInventoryData } = useContext(InventoryContext);
 
   const inventoryElements = ALL_REAGENTS.map((reagent) => {
     const { name, type } = reagent;
+    console.log('reagent->name: ', name);
+    console.log('reagent->type: ', type);
     const fetchInventoryReagent = name == 'cloth' ? inventoryData[type] : inventoryData[name][type];
+    
+    if(inventoryData[name]){
+      console.log('inventoryData[name][type]: ', inventoryData[name][type]);
+    }
+    
     let reagentCount = fetchInventoryReagent.count;
 
     return reagentCount > 0 && <Reagent 
@@ -78,8 +91,8 @@ export const Inventory = ({inventoryData,setInventoryData, resetReagentCount, re
             {reagentElements}
           </div>
           <div className="inventory-controls">
-            <button className="edit-inv">Bulk Edit</button>
             <button className="reset-inv" onClick={resetAll}>Reset All</button>
+            <button className="edit-inv">Bulk Edit</button>
           </div>
       </section>
   )

@@ -111,6 +111,8 @@ ul {
 /* === components === */
 
 .crafting {
+  min-height:840px;
+
   .recipes {
     border-top:var(--border);
     margin-top:15px;
@@ -163,44 +165,9 @@ ul {
   }
 }
 .reagent {
-  // background-color:pink;
-  align-items: center;
-  display:flex;
-  gap:15px;
-
-  &.inventory {
-    display:flex;
-    flex-direction:row;
-    justify-content:left;
-    .reagent-icon {
-      filter:saturate(10%);
-      &.in-stock {
-        filter:saturate(100%);
-      }
-    }
-  }
-  &.parent-all {
-    cursor:pointer;
-    .reagent-count {
-      display:none;
-    }
-    &:hover {
-      .reagent-icon {
-        transform: scale(1.25);
-      }
-    }
-  }
-  &.parent-recipe {
-    &:not(.craftable){
-      .reagent-icon-container {
-        border-color:#9b111e;
-      }
-      .reagent-count {
-        background-color:rgba(255,0,0,.4);
-      }
-    }
-  }
-
+  // align-items: center;
+  // display:flex;
+  // gap:15px;
   
   &-count {
     @include icon-overlay();
@@ -209,6 +176,7 @@ ul {
       font-size:14px;
       position:absolute;
       right:5px;
+      text-shadow:1px 2px #000;
       z-index:3;
       &.inv {
         left:5px;
@@ -234,6 +202,78 @@ ul {
     position:relative;
     transition: background-color .2s;
     width:50px;
+  }
+  &-main {
+    align-items: center;
+    display:flex;
+    gap:15px;
+    flex:1;
+  }
+  &-name {
+    text-transform:capitalize;
+  }
+  .reset-bag-count-icon {
+    cursor:pointer;
+    &.inv {
+      margin-left:auto;
+    }
+  }
+
+
+  &.parent-inventory {
+    align-items: center;
+    display:flex;
+    flex-direction:row;
+    gap:15px;
+    justify-content:space-between;
+    .reagent-icon {
+      filter:saturate(10%);
+      &.in-stock {
+        filter:saturate(100%);
+      }
+    }
+    .reagent-count-input {
+      text-align:center;
+      max-width: 60px;
+      width:100%;
+    }
+  }
+  &.parent-all {
+    cursor:pointer;
+    .reagent-count {
+      display:none;
+    }
+    &:hover {
+      .reagent-icon {
+        transform: scale(1.25);
+      }
+    }
+  }
+  &.parent-recipe {
+    &.not-craftable{
+      .reagent-icon-container {
+        border-color:#9b111e;
+      }
+      .reagent-count {
+        background-color:rgba(255,0,0,.2);
+      }
+    }
+    &.craftable{
+      .reagent-icon-container {
+        border-color:#046307;
+      }
+      .reagent-count {
+        background-color:rgba(4,99,7,.2);
+      }
+    }
+    &.overstock{
+      .reagent-icon-container {
+        border-color:#0f52ba;
+      }
+      .reagent-count {
+        background-color:rgba(15,82,186,.4);
+      }
+    }
   }
 }
 .recipe-single {
@@ -268,6 +308,9 @@ ul {
       width:50px;
     }
   }
+  .recipe-name {
+    text-transform:capitalize;
+  }
   .recipe-reagents {
     @include grid-3();
   }
@@ -276,6 +319,7 @@ ul {
 /* === layout === */
 
 .container {
+  background-color:rgba(29,29,29,.5);
   border: var(--border);
   border-radius:3px;
   padding: 2em;

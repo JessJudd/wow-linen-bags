@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { BAGS_DATA } from './BAGS_DATA.js';
+import { useState, createContext } from 'react';
+
 
 import { Header } from './components/Header.jsx';
 import { Inventory } from './components/Inventory.jsx';
@@ -7,8 +7,10 @@ import { Crafting } from './components/Crafting.jsx';
 
 import './App.scss'
 
+import { InventoryContext } from './helper/Context.jsx';
+
 function App() {
-  
+
   let inventory = {
     linen: { 
       count: 0,
@@ -33,16 +35,11 @@ function App() {
       },
     }
   }
-
   const [inventoryData, setInventoryData] = useState(inventory);
+
   const [faction,setFaction] = useState("");
-  
   function handleChangeFaction(event){
     setFaction(event.target.className);
-  }
-
-  function resetReagentCount(){
-
   }
 
   function resetAll(){
@@ -53,21 +50,20 @@ function App() {
   let factionClass = faction != '' ? `faction ${faction}` : '';
 
   return (
-      <main className={factionClass}>
-        <Header handleChangeFaction={handleChangeFaction} faction={faction} />
-        <div className={`bag-calc`}>
-          <div className="bag-calc-inner">
-            <Inventory 
-              inventoryData={inventoryData} 
-              setInventoryData={setInventoryData} 
-              resetReagentCount={resetReagentCount} 
-              resetAll={resetAll} 
-            />
-            <Crafting inventoryData={inventoryData} />
-        </div>
-      </div>
-      <footer></footer>
-    </main>
+      <InventoryContext.Provider value={{inventoryData,setInventoryData}}>
+        <main className={factionClass}>
+          <Header handleChangeFaction={handleChangeFaction} faction={faction} />
+          <div className={`bag-calc`}>
+            <div className="bag-calc-inner">
+              <Inventory 
+                resetAll={resetAll} 
+              />
+              <Crafting inventoryData={inventoryData} />
+            </div>
+          </div>
+          <footer></footer>
+        </main>
+      </InventoryContext.Provider>
   )
 
 }

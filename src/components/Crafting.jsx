@@ -1,11 +1,14 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { InventoryContext } from '../helper/Context.jsx';
 
 import { BAGS_DATA } from '../BAGS_DATA.js';
 
 import { NewBags } from './NewBags.jsx';
 import { Recipe } from './Recipe.jsx';
 
-export const Crafting = ({inventoryData}) => {
+export const Crafting = () => {
+    const { inventoryData } = useContext(InventoryContext);
+    
     console.log('crafting->inventoryData: ', inventoryData);
 
     let bags = {

@@ -1,26 +1,43 @@
+import { useContext } from 'react';
+import { InventoryContext } from '../helper/Context.jsx';
 import { MdClose } from 'react-icons/md';
 import { Reagent } from './Reagent.jsx';
 
-export const Recipe = ({ recipe, showMaterials, onClick, count, parent, bagCount, inventory, resetBagCount }) => {
-    console.log('parent: ', parent);
-    console.log('count: ', count);
+export const Recipe = ({ recipe, showMaterials, onClick, count, parent, bagCount, resetBagCount }) => {
     const { clothType, bagName, reagents } = recipe;
-    
-    console.log('bagCount: ', bagCount);
+    const { inventoryData } = useContext(InventoryContext);
 
     function fetchRecipeCount(reagent){
-        console.log('reagent: ', reagent.name);
         let count = reagent.count * bagCount;
-        console.log('fetchRecipeCount->reagent.count: ', reagent.count);
         return count;
     }
 
+    // function countCraftableBags(inventoryData){
+        // console.log('inventoryData: ', inventoryData);
+        // get count of reagents in inventory
+    const craftableBags = reagents.map((reagent) => {
+        const { name, type, count } = reagent;
+        let inventory;
+        if(name == 'cloth'){
+            inventory = inventoryData[type];
+            // console.log('inventory.count: ', inventory.count);
+        } else {
+            console.log('thread or leather');
+            inventory = inventoryData[name][type];
+            // console.log('inventory.count: ', inventory.count);
+        }
+
+        let inventoryCount = inventory.count;
+        console.log('inventoryCount: ', inventoryCount);
+        console.log(`inventoryCount / count = ${Math.floor(inventoryCount / count)}`);
+
+        // return number of craftable bags
+    });
+    // }
+
     const reagentElements = reagents.map((reagent) => {
 
-        const fetchInventoryReagent = inventory && 
-        (reagent.name == 'cloth' ? inventory[clothType] : inventory[reagent.name][reagent.type]);
-        
-        console.log('recipe->fetchInventoryReagent: ', fetchInventoryReagent);
+        let fetchInventoryReagent = (reagent.name == 'cloth') ? inventoryData[reagent.type] : inventoryData[reagent.name][reagent.type] ;
 
         let inventoryCount = fetchInventoryReagent && fetchInventoryReagent.count;
         
@@ -48,7 +65,7 @@ export const Recipe = ({ recipe, showMaterials, onClick, count, parent, bagCount
                     </span> 
                     <img className="recipe-icon" src={imgUrl} />
                 </div>
-                <span className="recipe-name">{clothType} {bagName}</span> {(bagCount > 0 && parent == 'menu') && <span className="reset-bag-count-icon" onClick={resetBagCount}><MdClose color="red" size="1.5em" /></span>}
+                <span className="recipe-name" onClick={onClick}>{clothType} {bagName}</span> {(bagCount > 0 && parent == 'menu') && <span className="reset-bag-count-icon" onClick={resetBagCount}><MdClose color="red" size="1.5em" /></span>}
             </div>
             {showMaterials != false && <div className="recipe-reagents">
                 { reagentElements }

@@ -38,7 +38,7 @@ export const NewBags = ({needBags, setNeedBags, resetBagCount}) => {
         <section className="newBags">
             <h4>Phase 1 Bags</h4>
             <div className="blurb">
-                <p>Set the amount of each bag you want to craft.</p>
+                <p>Click a bag to set the amount you want to craft.</p>
             </div>
             <div className="bag-menu">
                 { listBags }
