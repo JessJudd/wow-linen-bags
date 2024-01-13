@@ -1,5 +1,5 @@
 import { MdClose, MdAdd } from 'react-icons/md';
-import { useContext } from 'react';
+import { useState, useContext } from 'react';
 import { InventoryContext } from '../helper/Context.jsx';
 
 export const Reagent = ({clothType, count, img, reagent, onClick, parent }) => {
@@ -21,11 +21,10 @@ export const Reagent = ({clothType, count, img, reagent, onClick, parent }) => {
     const reagentName = name == 'cloth' ? `${clothType} ${name}` : `${type} ${name}`;
 
     const handleChange = (event) => {
-        console.log('handleSetInventoryData event: ', event.target.value);
+        console.log('handleSetInventoryData event: ', event.target);
     };
 
     function resetReagentCount(reagent) {
-
         if (reagent.name == 'cloth'){
             setInventoryData(prevInventoryData => ({
                 ...prevInventoryData,
@@ -44,8 +43,6 @@ export const Reagent = ({clothType, count, img, reagent, onClick, parent }) => {
                 }
             }));
         }
-
-        console.log(inventoryData);
     }
 
     return (
@@ -74,7 +71,7 @@ export const Reagent = ({clothType, count, img, reagent, onClick, parent }) => {
                     className="reagent-count-input" 
                     name="inventory" 
                     type="number" 
-                    
+                    value={inventory} 
                     onChange={(e)=>handleChange(e)} 
                 />
             }
