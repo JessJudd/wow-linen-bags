@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { InventoryContext } from '../helper/Context.jsx';
 
 import { ALL_REAGENTS } from '../ALL_REAGENTS.js';
@@ -8,23 +8,65 @@ import { Reagent } from './Reagent.jsx';
 
 export const Inventory = ({resetAll}) => {
 
+  const [ bulkEdit, setBulkEdit ] = useState(false);
+
   const { inventoryData, setInventoryData } = useContext(InventoryContext);
+
+  function toggleBulkEdit(){
+    setBulkEdit(prevBulkEdit => !prevBulkEdit);
+    console.log(`toggle bulk edit ${bulkEdit}`);
+  }
+
+  function handleShowBulkEdit(inventoryData) {
+    let show;
+    Object.entries(inventoryData).forEach((item) => {
+      console.log('item: ', item);
+      let name = item[0];
+      let count;
+      
+      if (name == 'thread' || name == 'leather'){
+        if(name == 'thread'){
+          console.log('thread');
+          let coarse = item[1].coarse;
+          let fine = item[1].fine;
+          if (coarse > 0 || fine > 0){
+            return show = true;
+          }
+          return show;
+        } else if (name == 'leather') {
+          console.log('leather');
+          let heavy = item[1].heavy;
+          if (heavy > 0){
+            return show = true;
+          }
+          return show;
+        }
+        return show;
+      } else {
+        console.log('cloth');
+        count = item[1].count;
+        
+        if (count > 0){
+          show = true;
+        }
+
+      }
+      return show;
+    });
+    return show;
+  }
+  let showBulkEdit = handleShowBulkEdit(inventoryData);
+  console.log('showBulkEdit: ', showBulkEdit);
 
   const inventoryElements = ALL_REAGENTS.map((reagent) => {
     const { name, type } = reagent;
-    console.log('reagent->name: ', name);
-    console.log('reagent->type: ', type);
-    const fetchInventoryReagent = name == 'cloth' ? inventoryData[type] : inventoryData[name][type];
-    
-    if(inventoryData[name]){
-      console.log('inventoryData[name][type]: ', inventoryData[name][type]);
-    }
-    
-    let reagentCount = fetchInventoryReagent.count;
+    // console.log(inventoryData);
 
-    return reagentCount > 0 && <Reagent 
+    let inventoryCount = name == 'cloth' ? inventoryData[type].count : inventoryData[name][type].count;
+
+    return inventoryCount > 0 && <Reagent 
         key={reagent.id} 
-        count={reagentCount}
+        count={inventoryCount}
         clothType={type} 
         img={`${name}_${type}.jpg`} 
         parent='inventory' 
@@ -33,31 +75,26 @@ export const Inventory = ({resetAll}) => {
   });
 
   function addReagent(name, type){
-
-    let property, 
-    fetchCount,
-    value;
+    console.log('*| clicked AddReagent |*');
+    let property;
     
     if (name == 'cloth') {
       property = type;
-      fetchCount = inventoryData[property];
-      value = fetchCount.count;
       setInventoryData(prevInventoryData => ({
         ...prevInventoryData,
         [property]: {
-          count: value + 1
+          count: prevInventoryData[property].count++
         },
       }));
+      console.log(`inventoryData[${property}].count`, inventoryData[property].count);
     } else {
       property = name;
-      fetchCount = inventoryData[property][type];
-      value = fetchCount.count;
       setInventoryData(prevInventoryData => ({
         ...prevInventoryData,
         [property]: {
           ...prevInventoryData[name],
           [type]: {
-            count: value + 1
+            count: prevInventoryData[name][type].count++
           },
         },
       }));
@@ -66,8 +103,8 @@ export const Inventory = ({resetAll}) => {
 
   const reagentElements = ALL_REAGENTS.map((reagent) => {
       const { name, type } = reagent;
-      const fetchInventoryReagent = name == 'cloth' ? inventoryData[type] : inventoryData[name][type];
-      let reagentCount = fetchInventoryReagent.count;
+
+      let reagentCount = name == 'cloth' ? inventoryData[type].count : inventoryData[name][type].count
 
       return <Reagent 
           key={reagent.id} 
@@ -75,7 +112,7 @@ export const Inventory = ({resetAll}) => {
           count={reagentCount}
           img={`${name}_${type}.jpg`} 
           reagent={reagent} 
-          onClick={()=>addReagent(name, type)}
+          onClick={()=>addReagent(name, type)} 
           parent='all' 
       />
   });
@@ -92,7 +129,7 @@ export const Inventory = ({resetAll}) => {
           </div>
           <div className="inventory-controls">
             <button className="reset-inv" onClick={resetAll}>Reset All</button>
-            <button className="edit-inv">Bulk Edit</button>
+            { showBulkEdit && <button className="edit-inv" onClick={toggleBulkEdit}>Bulk Edit</button>}
           </div>
       </section>
   )

@@ -43,11 +43,13 @@ function App() {
   }
 
   function resetAll(){
-    console.log('resetting inventory');
+    console.log('% RESET INVENTORY %');
     setInventoryData(prevInventoryData => inventory);
   }
 
   let factionClass = faction != '' ? `faction ${faction}` : '';
+
+  console.log('<- app rendered ->');
 
   return (
       <InventoryContext.Provider value={{inventoryData,setInventoryData}}>

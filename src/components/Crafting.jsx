@@ -8,8 +8,6 @@ import { Recipe } from './Recipe.jsx';
 
 export const Crafting = () => {
     const { inventoryData } = useContext(InventoryContext);
-    
-    console.log('crafting->inventoryData: ', inventoryData);
 
     let bags = {
         linen: {
@@ -35,7 +33,6 @@ export const Crafting = () => {
     }
 
     function craftBagsFromInv(recipe){
-        console.log('craftBagsFromRecipe: ', recipe);
         let bagCount = needBags[recipe.clothType];
         return bagCount;
     }
