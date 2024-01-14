@@ -1,10 +1,11 @@
 import { MdClose, MdAdd } from 'react-icons/md';
-import { useState, useContext } from 'react';
+import { useState, useContext, useId } from 'react';
 import { InventoryContext } from '../helper/Context.jsx';
 
 export const Reagent = ({clothType, count, img, reagent, onClick, parent }) => {
     const { inventoryData, setInventoryData } = useContext(InventoryContext);
-    const { name, type } = reagent;
+    const { name, type, id } = reagent;
+    console.log('reagent: ', reagent);
 
     let fetchInventory = (name == 'cloth') ? inventoryData[type] : inventoryData[name][type];
     let inventory = fetchInventory.count;
@@ -21,24 +22,25 @@ export const Reagent = ({clothType, count, img, reagent, onClick, parent }) => {
     const reagentName = name == 'cloth' ? `${clothType} ${name}` : `${type} ${name}`;
 
     const handleChange = (event) => {
-        console.log('handleSetInventoryData event: ', event.target);
+        const { name, id, value } = event.target;
+        setReagentCount(name, id, value);
     };
 
-    function resetReagentCount(reagent) {
-        if (reagent.name == 'cloth'){
+    function setReagentCount(name, type, value) {
+        if (name == 'cloth'){
             setInventoryData(prevInventoryData => ({
                 ...prevInventoryData,
-                [reagent.type]: {
-                    count: 0
+                [type]: {
+                    count: value
                 }
             }));
         } else {
             setInventoryData(prevInventoryData => ({
                 ...prevInventoryData,
-                [reagent.name]: {
-                    ...prevInventoryData[reagent.name],
-                    [reagent.type]: {
-                        count: 0
+                [name]: {
+                    ...prevInventoryData[name],
+                    [type]: {
+                        count: value
                     }
                 }
             }));
@@ -68,16 +70,17 @@ export const Reagent = ({clothType, count, img, reagent, onClick, parent }) => {
             </div>
             {parent == 'inventory' && 
                 <input 
+                    id={type} 
                     className="reagent-count-input" 
-                    name="inventory" 
+                    name={name}  
                     type="number" 
-                    value={inventory} 
+                    value={fetchInventory.count} 
                     onChange={(e)=>handleChange(e)} 
                 />
             }
             
             {(inventory > 0 && parent == 'inventory') && 
-                <span className="reset-bag-count-icon inv" onClick={()=>resetReagentCount(reagent)}>
+                <span className="reset-bag-count-icon inv" onClick={()=>setReagentCount(reagent.name, reagent.type, 0)}>
                     <MdClose color="red" size="1.25em" />
                 </span>
             }

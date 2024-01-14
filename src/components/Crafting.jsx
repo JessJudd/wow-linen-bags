@@ -34,6 +34,12 @@ export const Crafting = () => {
         }));
     }
 
+    function craftBagsFromInv(recipe){
+        console.log('craftBagsFromRecipe: ', recipe);
+        let bagCount = needBags[recipe.clothType];
+        return bagCount;
+    }
+
     const recipeElements = BAGS_DATA.map((recipe) => {
 
         let bagCount = needBags[recipe.clothType];
@@ -45,6 +51,7 @@ export const Crafting = () => {
                 recipe={recipe} 
                 showMaterials={true} 
                 parent="recipe" 
+                craftableCount={()=>craftBagsFromInv(recipe)}
                 bagCount={bagCount.count} 
                 inventory={inventoryData}
             />

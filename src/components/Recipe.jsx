@@ -6,34 +6,29 @@ import { Reagent } from './Reagent.jsx';
 export const Recipe = ({ recipe, showMaterials, onClick, count, parent, bagCount, resetBagCount }) => {
     const { clothType, bagName, reagents } = recipe;
     const { inventoryData } = useContext(InventoryContext);
-
+    
     function fetchRecipeCount(reagent){
         let count = reagent.count * bagCount;
         return count;
     }
 
-    // function countCraftableBags(inventoryData){
-        // console.log('inventoryData: ', inventoryData);
-        // get count of reagents in inventory
-    const craftableBags = reagents.map((reagent) => {
-        const { name, type, count } = reagent;
-        let inventory;
-        if(name == 'cloth'){
-            inventory = inventoryData[type];
-            // console.log('inventory.count: ', inventory.count);
-        } else {
-            console.log('thread or leather');
-            inventory = inventoryData[name][type];
-            // console.log('inventory.count: ', inventory.count);
-        }
+    function craftBagsFromInv(recipe){
+        const { clothType, reagents } = recipe;
 
-        let inventoryCount = inventory.count;
-        console.log('inventoryCount: ', inventoryCount);
-        console.log(`inventoryCount / count = ${Math.floor(inventoryCount / count)}`);
+        console.log('craftBagsFromRecipe: ', recipe);
+        let fetchInventory = inventoryData[clothType],
+            invCount = fetchInventory.count;
+        let fetchRecipeCloth = reagents[0],
+            clothPerBag = fetchRecipeCloth.count;
+        
+        console.log('clothPerBag: ', clothPerBag);
 
-        // return number of craftable bags
-    });
-    // }
+        let math = (invCount > clothPerBag) && Math.floor(invCount / clothPerBag);
+        return math;
+    }
+
+    const craftableCount = craftBagsFromInv(recipe);
+    console.log('craftableCount: ', craftableCount);
 
     const reagentElements = reagents.map((reagent) => {
 
@@ -61,7 +56,7 @@ export const Recipe = ({ recipe, showMaterials, onClick, count, parent, bagCount
             <div className="recipe-header">
                 <div className="recipe-icon-container" onClick={onClick}>
                     <span className="bag-count">
-                        { bagCount ? <span className="num">{bagCount}</span> : <span className="num">{count}</span>}
+                        { bagCount ? <span className="num">{ parent == 'recipe' && craftableCount > 1 ? `(${craftableCount}) ` : '' }{bagCount}</span> : <span className="num">{count}</span>}
                     </span> 
                     <img className="recipe-icon" src={imgUrl} />
                 </div>
