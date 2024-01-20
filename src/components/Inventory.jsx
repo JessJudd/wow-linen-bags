@@ -4,117 +4,71 @@ import { InventoryContext } from '../helper/Context.jsx';
 import { ALL_REAGENTS } from '../ALL_REAGENTS.js';
 
 import { Reagent } from './Reagent.jsx';
+import { InventoryReagent } from './InventoryReagent.jsx';
 
-
-export const Inventory = ({resetAll}) => {
-
-  const [ bulkEdit, setBulkEdit ] = useState(false);
+export const Inventory = ({resetAll, useBolts}) => {
 
   const { inventoryData, setInventoryData } = useContext(InventoryContext);
 
-  function toggleBulkEdit(){
-    setBulkEdit(prevBulkEdit => !prevBulkEdit);
-    console.log(`toggle bulk edit ${bulkEdit}`);
-  }
-
-  function handleShowBulkEdit(inventoryData) {
-    let show;
-    Object.entries(inventoryData).forEach((item) => {
-      console.log('item: ', item);
-      let name = item[0];
-      let count;
-      
-      if (name == 'thread' || name == 'leather'){
-        if(name == 'thread'){
-          console.log('thread');
-          let coarse = item[1].coarse;
-          let fine = item[1].fine;
-          if (coarse > 0 || fine > 0){
-            return show = true;
-          }
-          return show;
-        } else if (name == 'leather') {
-          console.log('leather');
-          let heavy = item[1].heavy;
-          if (heavy > 0){
-            return show = true;
-          }
-          return show;
-        }
-        return show;
-      } else {
-        console.log('cloth');
-        count = item[1].count;
-        
-        if (count > 0){
-          show = true;
-        }
-
-      }
-      return show;
-    });
-    return show;
-  }
-  let showBulkEdit = handleShowBulkEdit(inventoryData);
-  console.log('showBulkEdit: ', showBulkEdit);
-
   const inventoryElements = ALL_REAGENTS.map((reagent) => {
     const { name, type } = reagent;
-    // console.log(inventoryData);
 
     let inventoryCount = name == 'cloth' ? inventoryData[type].count : inventoryData[name][type].count;
 
-    return inventoryCount > 0 && <Reagent 
+    if (inventoryCount >= 1 && (( name == 'bolt' && useBolts == true ) || ( name != 'bolt'))) {
+
+      return <InventoryReagent   
         key={reagent.id} 
-        count={inventoryCount}
-        clothType={type} 
-        img={`${name}_${type}.jpg`} 
+        count={inventoryCount} 
         parent='inventory' 
         reagent={reagent} 
-    />
+        type={type} 
+
+        />
+    }
+
   });
 
-  function addReagent(name, type){
-    console.log('*| clicked AddReagent |*');
-    let property;
+  // function addReagent(name, type){
+  //   let property;
     
-    if (name == 'cloth') {
-      property = type;
-      setInventoryData(prevInventoryData => ({
-        ...prevInventoryData,
-        [property]: {
-          count: prevInventoryData[property].count++
-        },
-      }));
-      console.log(`inventoryData[${property}].count`, inventoryData[property].count);
-    } else {
-      property = name;
-      setInventoryData(prevInventoryData => ({
-        ...prevInventoryData,
-        [property]: {
-          ...prevInventoryData[name],
-          [type]: {
-            count: prevInventoryData[name][type].count++
-          },
-        },
-      }));
-    }
-  }
+  //   if (name == 'cloth') {
+  //     property = type;
+  //     setInventoryData(prevInventoryData => ({
+  //       ...prevInventoryData,
+  //       [property]: {
+  //         count: prevInventoryData[property].count++
+  //       },
+  //     }));
+  //   } else {
+  //     property = name;
+  //     setInventoryData(prevInventoryData => ({
+  //       ...prevInventoryData,
+  //       [property]: {
+  //         ...prevInventoryData[name],
+  //         [type]: {
+  //           count: prevInventoryData[name][type].count++
+  //         },
+  //       },
+  //     }));
+  //   }
+  // }
 
   const reagentElements = ALL_REAGENTS.map((reagent) => {
       const { name, type } = reagent;
 
-      let reagentCount = name == 'cloth' ? inventoryData[type].count : inventoryData[name][type].count
+      let reagentCount = name == 'cloth' ? inventoryData[type].count : inventoryData[name][type].count;
 
-      return <Reagent 
+      if (( name == 'bolt' && useBolts == true ) || ( name != 'bolt')) {
+        return <InventoryReagent   
           key={reagent.id} 
-          clothType={type} 
-          count={reagentCount}
-          img={`${name}_${type}.jpg`} 
+          count={reagentCount} 
+          parent='menu' 
           reagent={reagent} 
-          onClick={()=>addReagent(name, type)} 
-          parent='all' 
-      />
+          type={type} 
+        />
+      }
+
   });
 
   return (
@@ -129,7 +83,6 @@ export const Inventory = ({resetAll}) => {
           </div>
           <div className="inventory-controls">
             <button className="reset-inv" onClick={resetAll}>Reset All</button>
-            { showBulkEdit && <button className="edit-inv" onClick={toggleBulkEdit}>Bulk Edit</button>}
           </div>
       </section>
   )

@@ -2,19 +2,32 @@ import { MdClose, MdAdd } from 'react-icons/md';
 import { useState, useContext, useId } from 'react';
 import { InventoryContext } from '../helper/Context.jsx';
 
-export const Reagent = ({clothType, count, img, reagent, onClick, parent, recipeCount }) => {
-    const { inventoryData, setInventoryData } = useContext(InventoryContext);
-    const { name, type } = reagent;
+export const Reagent = (
+    {   
+        variant, 
+        reagent, 
+        handleFunction, 
+        count, // inventory, bag, recipeX, recipeY
+        type, // linen, wool, silk, coarse, fine, heavy
+        
+        // img,  
+        onClick, 
+        parent, 
+        recipeCount
+    }) => {
+        
+        const { inventoryData, setInventoryData } = useContext(InventoryContext);
+        const { name } = reagent;
 
     let fetchInventory = (name == 'cloth') ? inventoryData[type] : inventoryData[name][type];
-    let inventory = fetchInventory.count;
+    const inventory = fetchInventory.count;
+    
 
-    const imgPath = `../assets/${img}`;
+    let imgPath = `../assets/${reagent.name}_${reagent.type}.jpg`;
     const imgUrl = new URL(imgPath, import.meta.url).href;
 
     function getInventoryClass(){
         let newClass;
-        console.log('parent: ', parent);
         if (parent == 'all' && inventory > 0) {
             newClass = 'add-reagent-off';
         } else if(inventory < count && inventory > 0){
@@ -29,7 +42,7 @@ export const Reagent = ({clothType, count, img, reagent, onClick, parent, recipe
 
     const inventoryClassName = getInventoryClass();
     const className = `reagent ${name} parent-${parent} ${inventoryClassName}`;
-    const reagentName = name == 'cloth' ? `${clothType} ${name}` : `${type} ${name}`;
+    let reagentName = `${type} ${name}`;
 
     const handleChange = (event) => {
         const { name, id, value } = event.target;
@@ -61,18 +74,14 @@ export const Reagent = ({clothType, count, img, reagent, onClick, parent, recipe
         let num;
         let reagentCount = reagent.count;
         let vendorCount = recipeCount && `(${reagentCount * recipeCount})`;
-        console.log('recipeCount: ', recipeCount);
         if(inventory > 0 && parent != 'inventory' && vendorCount == 0){
             num = <span className="num">{inventory}/{count}</span>;
-        } else if ((recipeCount > 0 || count != vendorCount) && parent == 'recipe'){
+        } else if (count != vendorCount && parent == 'recipe'){
             let inventoryNum = inventory > 0 ? `${inventory} / ` : '';
-            num = <span className="num">{inventoryNum}{count} {vendorCount}</span>;
+            num = <span className="num">{inventoryNum}{count}</span>;
         } else {
             num = <span className="num">{count}</span>;
         }
-        console.log('count: ', count);
-        console.log('inventory: ', inventory);
-        console.log('vendorCount: ', reagentCount * recipeCount);
         return num;
     }
 
@@ -81,18 +90,17 @@ export const Reagent = ({clothType, count, img, reagent, onClick, parent, recipe
     return (
         <div className={className}>
             <div className="reagent-main" 
-                onClick={parent == 'all' && inventory == 0 ? ()=>setReagentCount(reagent.name, reagent.type, 1) : undefined}>
+                onClick={ parent == 'all' && inventory == 0 ? 
+                    ()=>setReagentCount(reagent.name, reagent.type, 1) : undefined 
+                    }>
                 <figure className="reagent-icon-container">
-                        <span className="reagent-count icon">
-                            {reagentCountNum}
-                        </span>
+                    <span className="reagent-count icon">{reagentCountNum}</span>
                     <img className={`reagent-icon ${count > 0 ? "in-stock" : "" }`} src={imgUrl} />
                 </figure>
                 
                 {parent != 'all' && 
                     <>
                     <span className="reagent-name">{reagentName}</span>
-                    <span className="reagent-count">{reagentCountNum}</span>
                     </>
                 }
 
@@ -100,7 +108,7 @@ export const Reagent = ({clothType, count, img, reagent, onClick, parent, recipe
             {parent == 'inventory' && 
                 <input 
                     id={type} 
-                    className="reagent-count-input" 
+                    className="count-input" 
                     name={name}  
                     type="number" 
                     value={fetchInventory.count} 

@@ -26,6 +26,7 @@
   grid-template-columns: repeat(3, 1fr);
   grid-auto-rows: minmax(50px, auto);
   padding: 0 0 15px 0;
+  column-gap: 15px;
 }
 
 #root {
@@ -72,6 +73,11 @@ button {
   border: none;
   color: inherit;
   font: inherit;
+  &.simple {
+    border: var(--border);
+    border-radius:5px;
+    padding:5px 10px;
+  }
 }
 form {
   margin:30px 0;
@@ -89,11 +95,11 @@ ul {
 .bag-calc {
   display:flex;
   place-items: center;
-  max-width:1280px;
+  // max-width:1280px;
   margin:0 auto;
   &-inner {
     display:grid;
-    grid-template-columns:repeat(4,1fr);
+    grid-template-columns:28% 1fr 1fr 1fr;
     grid-template-rows:minmax(250px, auto);
     gap:15px;
     width:100%;
@@ -112,10 +118,8 @@ ul {
 
 .crafting {
   min-height:840px;
-
   .recipes {
     border-top:var(--border);
-    margin-top:15px;
     padding-top:15px;
   }
 }
@@ -135,7 +139,9 @@ ul {
     border-top:var(--border);
     display:flex;
     flex-direction: row;
+    flex-wrap: wrap;
     gap:15px;
+    justify-content: center;
     margin-top:15px;
     padding: 15px 0;
     .reagent-name {
@@ -164,8 +170,8 @@ ul {
     padding:0;
   }
 }
-.reagent {
- 
+
+.reagent { 
   &-count {
     &.icon {
       @include icon-overlay();
@@ -202,6 +208,7 @@ ul {
     display:flex;
     gap:15px;
     height:50px;
+    min-width:50px;
     overflow:hidden;
     position:relative;
     transition: background-color .2s;
@@ -224,30 +231,34 @@ ul {
   }
 
 
+
   &.parent-inventory {
     align-items: center;
     display:flex;
     flex-direction:row;
     gap:15px;
     justify-content:space-between;
+
+    .reagent-modifiers {
+      align-items: center;
+      display: flex;
+      gap: 15px;
+    }
+
     .reagent-icon {
       filter:saturate(10%);
       &.in-stock {
         filter:saturate(100%);
       }
     }
-    .reagent-count-input {
-      text-align:center;
-      max-width: 60px;
-      width:100%;
-    }
   }
-  &.parent-all {
+  &.parent-menu {
     cursor:pointer;
     .reagent-count {
       display:none;
     }
     &.add-reagent-off {
+      cursor:initial;
       .reagent-main {
         opacity:.4;
       }
@@ -264,7 +275,7 @@ ul {
         border-color:#9b111e;
       }
       .reagent-count.icon {
-        background-color:rgba(255,0,0,.2);
+        background-color:rgba(255,0,0,.4);
       }
     }
     &.craftable{
@@ -272,7 +283,7 @@ ul {
         border-color:#046307;
       }
       .reagent-count.icon {
-        background-color:rgba(4,99,7,.2);
+        background-color:rgba(0, 132, 45, 0.6);
       }
     }
     &.overstock{
@@ -280,17 +291,34 @@ ul {
         border-color:#0f52ba;
       }
       .reagent-count.icon {
-        background-color:rgba(15,82,186,.4);
+        background-color: rgba(0, 64, 255, 0.4);
       }
     }
   }
 }
 .recipe-single {
-  padding:15px 0;
-  border-bottom: var(--border);
+  border: var(--border);
+  border-top: none;
+
+  &.recipe {
+    display:grid;
+    grid-template-columns: 1fr 1fr 250px;
+    grid-template-rows: repeat(2, 1fr);
+    column-gap: 15px;
+    row-gap: 15px;
+    align-items:center;
+    .recipe-header {
+      padding:15px 0 0 15px;
+      grid-column-start:1;
+      grid-column: 1 / span 2;
+    }
+  }
+
   &.menu {
     cursor:pointer;
+    
   }
+  
   .bag-count {
     @include icon-overlay();
     .num {
@@ -301,11 +329,12 @@ ul {
       z-index:3;
     }
   }
+  
   .recipe-header {
     align-items: center;
     display:flex;
     gap:15px;
-    padding: 15px 0;
+    padding-top:15px;
   }
   .recipe-icon-container {
     position:relative;
@@ -314,6 +343,7 @@ ul {
       border-radius:5px;
       border: 1px solid gold;
       height:50px;
+      min-width:50px;
       width:50px;
     }
   }
@@ -322,6 +352,61 @@ ul {
   }
   .recipe-reagents {
     @include grid-3();
+
+    grid-column: 1 / span 2;
+    padding:0 0 15px 15px;
+  }
+
+  .recipe-summary {
+    grid-column: 3;
+    grid-row: 1 / span 2;
+    border-left: var(--border);
+    padding:15px 0;
+    .summary-list {
+      margin:0;
+      padding: 15px 15px 0 15px;
+      line-height:1.2;
+      li + li {
+        margin-top: 10px;
+      }
+    }
+    .summary-title {      
+      display:flex;
+      padding: 15px;
+    }
+    .caps {
+      text-transform: capitalize;
+      .count {
+        text-transform: none;
+      }
+    }
+    .summary-list-item {
+      display:flex;
+    }
+    .count-border {
+      flex: 1;
+      border-bottom:thin dotted silver;
+    }
+    .inventory-count {
+      padding:0 5px;
+    }
+  }
+}
+
+.count-input {
+  text-align:center;
+  max-width: 60px;
+  width:100%;
+}
+
+.crafting-controls {
+  border: var(--border);
+  padding: 15px;
+  margin: 15px 0 30px 0;
+  .options {
+    display: flex;
+    gap: 15px;
+    padding:15px 0 0 0;
   }
 }
 

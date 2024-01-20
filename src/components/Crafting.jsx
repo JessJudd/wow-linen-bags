@@ -4,9 +4,10 @@ import { InventoryContext } from '../helper/Context.jsx';
 import { BAGS_DATA } from '../BAGS_DATA.js';
 
 import { NewBags } from './NewBags.jsx';
+import { Controls } from './Controls.jsx';
 import { Recipe } from './Recipe.jsx';
 
-export const Crafting = () => {
+export const Crafting = ({useBolts,setUseBolts}) => {
     const { inventoryData } = useContext(InventoryContext);
 
     let bags = {
@@ -20,37 +21,46 @@ export const Crafting = () => {
             count: 0,
         }
     }
-    const [needBags,setNeedBags] = useState(bags);
+    const [needBags, setNeedBags] = useState(bags);
 
-    function resetBagCount(recipe){
-        console.log('recipe: ', recipe);
-        setNeedBags(prevNeedBags => ({
-            ...prevNeedBags,
-            [recipe.clothType]: {
-                count: 0
-            }
-        }));
-    }
+    const [showSummary, setShowSummary] = useState(true);
 
-    function craftBagsFromInv(recipe){
-        let bagCount = needBags[recipe.clothType];
-        return bagCount;
-    }
+    // function resetBagCount(recipe){
+    //     setNeedBags(prevNeedBags => ({
+    //         ...prevNeedBags,
+    //         [recipe.clothType]: {
+    //             count: 0
+    //         }
+    //     }));
+    // }
+
+    // function craftBagsFromInv(recipe){
+    //     let bagCount = needBags[recipe.clothType];
+    //     return bagCount;
+    // }
 
     const recipeElements = BAGS_DATA.map((recipe) => {
 
+        // console.log('recipeElements->useBolts: ', useBolts);
+
         let bagCount = needBags[recipe.clothType];
+        
+        // console.log('bagCount: ', bagCount);
+
+        let parent = 'recipe';
+        
 
         return (
             bagCount.count > 0 && 
             <Recipe 
                 key={recipe.id} 
                 recipe={recipe} 
-                showMaterials={true} 
-                parent="recipe" 
-                craftableCount={()=>craftBagsFromInv(recipe)}
-                bagCount={bagCount.count} 
-                inventory={inventoryData}
+                parent={parent} 
+                
+                bagCount={bagCount.count} // needBags
+
+                showSummary={showSummary} 
+                useBolts={useBolts} 
             />
         )
     });
@@ -60,7 +70,12 @@ export const Crafting = () => {
             <NewBags 
                 needBags={needBags} 
                 setNeedBags={setNeedBags} 
-                resetBagCount={resetBagCount} 
+            />
+            <Controls 
+                useBolts={useBolts} 
+                setUseBolts={setUseBolts} 
+                showSummary={showSummary} 
+                setShowSummary={setShowSummary} 
             />
             <div className="recipes">
                 <h4>Recipes</h4>

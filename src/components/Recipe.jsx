@@ -1,68 +1,125 @@
 import { useContext } from 'react';
 import { InventoryContext } from '../helper/Context.jsx';
 import { MdClose } from 'react-icons/md';
-import { Reagent } from './Reagent.jsx';
 
-export const Recipe = ({ recipe, showMaterials, onClick, count, parent, bagCount, resetBagCount }) => {
-    const { clothType, bagName, reagents } = recipe;
-    const { inventoryData } = useContext(InventoryContext);
+
+import { RecipeHeader } from './RecipeHeader.jsx';
+import { RecipeReagent } from './RecipeReagent.jsx';
+import { RecipeSummaryListItem } from './RecipeSummaryListItem.jsx';
+
+export const Recipe = (
+    {   recipe, 
+        parent, 
+        count, //
+        bagCount, // needBags[recipe.clothType].count 
+
+        needBags, 
+        setNeedBags,
+        
+        
+        addBag, 
+        
+        resetBagCount,  
+        showSummary, 
+        useBolts }) => {
+            
+            // console.log('[Recipe] parent: ', parent);
+            
+            const { clothType, bagName, reagents } = recipe;
+            const { inventoryData } = useContext(InventoryContext);
+            
+            
+            // console.log('[Recipe] needBags: ', needBags);
+
+    // const handleChange = (event) => {
+    //     const { name, id, value } = event.target;
+
+    //     setNeedBags(prevNeedBags => ({
+    //         ...prevNeedBags,
+    //         [name]: {
+    //             count: value
+    //         }
+    //     }));
+    // }
+
+    // function craftBagsFromInv(recipe){
+    //     const { clothType, reagents } = recipe;
+
+    //     let fetchInventory = inventoryData[clothType],
+    //         invCount = fetchInventory.count;
+    //     let fetchRecipeCloth = reagents[0],
+    //         clothPerBag = fetchRecipeCloth.count;
+
+    //     let math = (invCount > clothPerBag) && Math.floor(invCount / clothPerBag);
+    //     return math;
+    // }
+
+    function craftBagsFromInv(){
+        let inventory = inventoryData[clothType].count;
+        let clothPerBag = reagents[0].count;
+        return Math.floor(inventory / clothPerBag);
+    }
     
-    function fetchRecipeCount(reagent){
-        let count = reagent.count * bagCount;
-        return count;
-    }
+    let craftableCount = craftBagsFromInv(recipe); 
+    console.log('craftableCount: ', craftableCount); 
 
-    function craftBagsFromInv(recipe){
-        const { clothType, reagents } = recipe;
-
-        let fetchInventory = inventoryData[clothType],
-            invCount = fetchInventory.count;
-        let fetchRecipeCloth = reagents[0],
-            clothPerBag = fetchRecipeCloth.count;
-
-        let math = (invCount > clothPerBag) && Math.floor(invCount / clothPerBag);
-        return math;
-    }
-
-    const craftableCount = craftBagsFromInv(recipe);
-
-    const reagentElements = reagents.map((reagent) => {
-
-        let fetchInventoryReagent = (reagent.name == 'cloth') ? inventoryData[reagent.type] : inventoryData[reagent.name][reagent.type] ;
-
-        let inventoryCount = fetchInventoryReagent && fetchInventoryReagent.count;
+    const recipeReagents = reagents.map((reagent) => {
         
-        console.log('craftableCount: ', craftableCount);
+        let isCloth = reagent.name == 'cloth' ? true : false;
         
-        return <Reagent 
+        let inventoryCount = isCloth ? inventoryData[reagent.type].count : inventoryData[reagent.name][reagent.type].count;
+        // console.log('inventoryCount: ', inventoryCount);
+        
+        return <RecipeReagent 
             key={reagent.id} 
             reagent={reagent} 
-            clothType={clothType}
-            parent='recipe'
-            img={`${reagent.name}_${reagent.type}.jpg`} 
-            inventory={inventoryCount} 
-            count={fetchRecipeCount(reagent)} 
-            recipeCount={craftableCount} 
+            recipe={recipe} 
+            count={reagent.count * bagCount} 
+            type={reagent.type} 
+            parent="recipe" 
         />
     });
 
-    const imgPath = `../assets/${bagName}_${clothType}.jpg`;
-    const imgUrl = new URL(imgPath, import.meta.url).href;
+    const reagentList = reagents.map((reagent) => {
+        return <RecipeSummaryListItem 
+        key={reagent.type} 
+        reagent={reagent} 
+        bagCount={bagCount} 
+        craftableCount={craftableCount} 
+        />
+    });
+    
+    console.log('reagentList: ', reagentList);
+
+    // const imgPath = `../assets/${bagName}_${clothType}.jpg`;
+    // const imgUrl = new URL(imgPath, import.meta.url).href;
+
     let recipeClass = `recipe-single ${parent}`;
+    console.log('needBags: ', needBags);
+
+    let showCraftableCount = craftableCount > 0 && <span className="inventory-count">({craftableCount})</span>
+    let showBagCount = bagCount > 0 && <span className="count">x{bagCount}</span>;
 
     return (
         <div className={recipeClass}> 
-            <div className="recipe-header">
-                <div className="recipe-icon-container" onClick={onClick}>
-                    <span className="bag-count">
-                        { bagCount ? <span className="num">{ parent == 'recipe' && craftableCount > 1 && craftableCount > bagCount ? `(${craftableCount}) ` : '' }{bagCount}</span> : <span className="num">{count}</span>}
-                    </span> 
-                    <img className="recipe-icon" src={imgUrl} />
-                </div>
-                <span className="recipe-name" onClick={onClick}>{clothType} {bagName}</span> {(bagCount > 0 && parent == 'menu') && <span className="reset-bag-count-icon" onClick={resetBagCount}><MdClose color="red" size="1.5em" /></span>}
-            </div>
-            {showMaterials != false && <div className="recipe-reagents">
-                { reagentElements }
+            <RecipeHeader 
+                parent={parent} 
+                recipe={recipe} 
+                count={bagCount} 
+
+                needBags={needBags} 
+                setNeedBags={setNeedBags} 
+            />
+
+            {parent == 'recipe' && <div className="recipe-reagents">
+                { recipeReagents }
+            </div>}
+
+            {parent == 'recipe' && showSummary != false && <div className="recipe-summary">
+                <h4 className="summary-title caps">{clothType} {bagName} {showCraftableCount}<span className="count-border"></span>{showBagCount}</h4>
+                <ul className="summary-list">
+                    { reagentList }
+                </ul>
             </div>}
         </div>
     )

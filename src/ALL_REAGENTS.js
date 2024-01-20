@@ -5,36 +5,36 @@ export const ALL_REAGENTS = [
         type: 'linen',
         perBolt: 3,
     },
-    // {
-    //     id: 2996,
-    //     name: 'bolt',
-    //     type: 'linen',
-    //     count: 2,
-    // },
+    {
+        id: 2996,
+        name: 'bolt',
+        type: 'linen',
+        count: 2,
+    },
     {
         id: 2592,
         name: 'cloth',
         type: 'wool',
         perBolt: 3,
     },
-    // {
-    //     id: 2997,
-    //     name: 'bolt',
-    //     type: 'wool',
-    //     count: 3,
-    // },
+    {
+        id: 2997,
+        name: 'bolt',
+        type: 'wool',
+        count: 3,
+    },
     {
         id: 4306,
         name: 'cloth',
         type: 'silk',
         perBolt: 4,
     },
-    // {
-    //     id: 4305,
-    //     name: 'bolt',
-    //     type: 'silk',
-    //     count: 3,
-    // },
+    {
+        id: 4305,
+        name: 'bolt',
+        type: 'silk',
+        count: 3,
+    },
     {
         id: 2320,
         name: 'thread',
@@ -52,4 +52,6 @@ export const ALL_REAGENTS = [
         name: 'leather',
         type: 'heavy',
     },
-]
+];
+
+// declare another const 

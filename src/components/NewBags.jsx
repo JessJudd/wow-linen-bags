@@ -1,8 +1,10 @@
 import { BAGS_DATA } from '../BAGS_DATA.js';
 import { Recipe } from './Recipe.jsx';
 
-export const NewBags = ({needBags, setNeedBags, resetBagCount}) => {
-
+export const NewBags = ({needBags, setNeedBags}) => {
+    
+    // console.log('NewBags->needBags: ', needBags);
+    
     function addBag(recipe) {
         const { clothType } = recipe;
 
@@ -11,7 +13,18 @@ export const NewBags = ({needBags, setNeedBags, resetBagCount}) => {
         setNeedBags(prevNeedBags => ({
             ...prevNeedBags,
             [clothType]: {
-                count: value.count + 1
+                count: prevNeedBags[clothType].count + 1
+            }
+        }));
+    }
+
+    const handleChange = (event) => {
+        const { name, id, value } = event.target;
+
+        setNeedBags(prevNeedBags => ({
+            ...prevNeedBags,
+            [name]: {
+                count: value
             }
         }));
     }
@@ -20,16 +33,22 @@ export const NewBags = ({needBags, setNeedBags, resetBagCount}) => {
         let fetchBag = needBags[recipe.clothType];
         let bagCount = fetchBag.count;
 
+        let parent = 'menu';
+
         return (
             <Recipe 
                 key={recipe.id} 
                 recipe={recipe} 
-                showMaterials={false}
-                onClick={() => addBag(recipe)} 
+                parent={parent} 
+                count={bagCount} 
+
+                needBags={needBags} 
+                setNeedBags={setNeedBags} 
+
                 bagCount={bagCount} 
-                showCount={true} 
-                parent="menu"
-                resetBagCount={()=> resetBagCount(recipe)}
+                addBag={() => addBag(recipe)} 
+                resetBagCount={()=> resetBagCount(recipe)} 
+                handleChange={(e) => handleChange(e)}
             />
         )
     });

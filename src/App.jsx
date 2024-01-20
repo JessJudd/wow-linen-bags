@@ -2,12 +2,13 @@ import { useState, createContext } from 'react';
 
 
 import { Header } from './components/Header.jsx';
-import { Inventory } from './components/Inventory.jsx';
+import { Inventory } from './components/Inventory.jsx'
 import { Crafting } from './components/Crafting.jsx';
 
 import './App.scss'
 
 import { InventoryContext } from './helper/Context.jsx';
+
 
 function App() {
 
@@ -20,6 +21,17 @@ function App() {
     },
     silk: {
       count: 0,
+    },
+    bolt: {
+      linen: { 
+        count: 0,
+      },
+      wool: {
+        count: 0,
+      },
+      silk: {
+        count: 0,
+      },
     },
     leather: {
       heavy: {
@@ -35,15 +47,17 @@ function App() {
       },
     }
   }
-  const [inventoryData, setInventoryData] = useState(inventory);
-
-  const [faction,setFaction] = useState("");
+  const [ inventoryData, setInventoryData ] = useState(inventory); 
+  const [ faction,setFaction ] = useState(""); 
+  const [ useBolts, setUseBolts ] = useState(false); 
+  
+  
   function handleChangeFaction(event){
     setFaction(event.target.className);
   }
 
   function resetAll(){
-    console.log('% RESET INVENTORY %');
+    // console.log('% RESET INVENTORY %');
     setInventoryData(prevInventoryData => inventory);
   }
 
@@ -59,8 +73,13 @@ function App() {
             <div className="bag-calc-inner">
               <Inventory 
                 resetAll={resetAll} 
+                useBolts={useBolts} 
               />
-              <Crafting inventoryData={inventoryData} />
+              <Crafting 
+                inventoryData={inventoryData} 
+                useBolts={useBolts} 
+                setUseBolts={setUseBolts} 
+              />
             </div>
           </div>
           <footer></footer>
