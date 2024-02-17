@@ -1,19 +1,17 @@
-import { useState, createContext } from 'react';
+import { useState, createContext } from "react";
 
+import { Header } from "./components/Header.jsx";
+import { Inventory } from "./components/Inventory.jsx";
+import { Crafting } from "./components/Crafting.jsx";
+import { Footer } from "./components/Footer.jsx";
 
-import { Header } from './components/Header.jsx';
-import { Inventory } from './components/Inventory.jsx'
-import { Crafting } from './components/Crafting.jsx';
+import "./App.scss";
 
-import './App.scss'
-
-import { InventoryContext } from './helper/Context.jsx';
-
+import { InventoryContext } from "./helper/Context.jsx";
 
 function App() {
-
-  let inventory = {
-    linen: { 
+  let inv_p1 = {
+    linen: {
       count: 0,
     },
     wool: {
@@ -23,7 +21,7 @@ function App() {
       count: 0,
     },
     bolt: {
-      linen: { 
+      linen: {
         count: 0,
       },
       wool: {
@@ -40,53 +38,114 @@ function App() {
     },
     thread: {
       coarse: {
-        count:0
+        count: 0,
       },
       fine: {
-        count: 0
+        count: 0,
       },
-    }
-  }
-  const [ inventoryData, setInventoryData ] = useState(inventory); 
-  const [ faction,setFaction ] = useState(""); 
-  const [ useBolts, setUseBolts ] = useState(false); 
-  
-  
-  function handleChangeFaction(event){
+    },
+  };
+  let inv_p2 = {
+    mageweave: {
+      count: 0,
+    },
+    bolt: {
+      mageweave: {
+        count: 0,
+      },
+    },
+    enchanted: {
+      count: 0,
+    },
+    dust: {
+      vision: {
+        count: 0,
+      },
+    },
+    thread: {
+      silken: {
+        count: 0,
+      },
+    },
+  };
+
+  let bags_p1 = {
+    linen: {
+      count: 0,
+    },
+    wool: {
+      count: 0,
+    },
+    silk: {
+      count: 0,
+    },
+  };
+  let bags_p2 = {
+    mageweave: {
+      count: 0,
+    },
+    enchanted: {
+      count: 0,
+    },
+  };
+
+  const [faction, setFaction] = useState("");
+  const [phase, setPhase] = useState(2); // 1 or 2
+  const [inventoryData, setInventoryData] = useState(inv_p2);
+  const [needBags, setNeedBags] = useState(bags_p2);
+  const [useBolts, setUseBolts] = useState(false);
+
+  function handleChangeFaction(event) {
     setFaction(event.target.className);
   }
 
-  function resetAll(){
-    // console.log('% RESET INVENTORY %');
-    setInventoryData(prevInventoryData => inventory);
+  function handleSetPhase(phaseNum) {
+    setPhase(phaseNum);
+    if (phaseNum == 2) {
+      setInventoryData(inv_p2);
+      setNeedBags(bags_p2);
+    } else {
+      setInventoryData(inv_p1);
+      setNeedBags(bags_p1);
+    }
   }
 
-  let factionClass = faction != '' ? `faction ${faction}` : '';
+  function resetAll() {
+    // console.log('% RESET INVENTORY %');
 
-  console.log('<- app rendered ->');
+    setInventoryData(phase == 2 ? inv_p2 : inv_p1);
+  }
+
+  let factionClass = faction != "" ? `faction ${faction}` : "";
+
+  console.log("<- app rendered ->");
 
   return (
-      <InventoryContext.Provider value={{inventoryData,setInventoryData}}>
-        <main className={factionClass}>
-          <Header handleChangeFaction={handleChangeFaction} faction={faction} />
-          <div className={`bag-calc`}>
-            <div className="bag-calc-inner">
-              <Inventory 
-                resetAll={resetAll} 
-                useBolts={useBolts} 
-              />
-              <Crafting 
-                inventoryData={inventoryData} 
-                useBolts={useBolts} 
-                setUseBolts={setUseBolts} 
-              />
-            </div>
+    <InventoryContext.Provider value={{ inventoryData, setInventoryData }}>
+      <main className={factionClass}>
+        <Header
+          setFaction={setFaction}
+          faction={faction}
+          phase={phase}
+          handleSetPhase={handleSetPhase}
+        />
+        <div className={`bag-calc`}>
+          <div className="bag-calc-inner">
+            <Inventory resetAll={resetAll} useBolts={useBolts} phase={phase} />
+            <Crafting
+              needBags={needBags}
+              setNeedBags={setNeedBags}
+              inventoryData={inventoryData}
+              useBolts={useBolts}
+              setUseBolts={setUseBolts}
+              phase={phase}
+            />
           </div>
-          <footer></footer>
-        </main>
-      </InventoryContext.Provider>
-  )
-
+        </div>
+        <Footer />
+      </main>
+    </InventoryContext.Provider>
+  );
 }
 
-export default App
+export default App;

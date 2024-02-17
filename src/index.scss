@@ -18,7 +18,8 @@ html {
 *, *::before, *::after {
   box-sizing: border-box;
 }
-* {
+*,
+form {
   margin: 0;
 }
 img, picture, video, canvas, svg {

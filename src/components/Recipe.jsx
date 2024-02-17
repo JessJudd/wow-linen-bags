@@ -1,126 +1,98 @@
-import { useContext } from 'react';
-import { InventoryContext } from '../helper/Context.jsx';
-import { MdClose } from 'react-icons/md';
+import { useContext } from "react";
+import { InventoryContext } from "../helper/Context.jsx";
+import { MdClose } from "react-icons/md";
 
+import { RecipeHeader } from "./RecipeHeader.jsx";
+import { RecipeReagent } from "./RecipeReagent.jsx";
+import { RecipeSummaryListItem } from "./RecipeSummaryListItem.jsx";
 
-import { RecipeHeader } from './RecipeHeader.jsx';
-import { RecipeReagent } from './RecipeReagent.jsx';
-import { RecipeSummaryListItem } from './RecipeSummaryListItem.jsx';
+export const Recipe = ({
+  recipe,
+  needBags,
+  setNeedBags,
+  showSummary,
+  useBolts,
+}) => {
+  const { clothType, bagName, reagents } = recipe;
+  const { inventoryData } = useContext(InventoryContext);
 
-export const Recipe = (
-    {   recipe, 
-        parent, 
-        count, //
-        bagCount, // needBags[recipe.clothType].count 
+  const bagCount = needBags[clothType].count;
 
-        needBags, 
-        setNeedBags,
-        
-        
-        addBag, 
-        
-        resetBagCount,  
-        showSummary, 
-        useBolts }) => {
-            
-            // console.log('[Recipe] parent: ', parent);
-            
-            const { clothType, bagName, reagents } = recipe;
-            const { inventoryData } = useContext(InventoryContext);
-            
-            
-            // console.log('[Recipe] needBags: ', needBags);
+  function craftBagsFromInv() {
+    let inventory = inventoryData[clothType].count;
+    let clothPerBag = reagents[0].count;
+    return Math.floor(inventory / clothPerBag);
+  }
 
-    // const handleChange = (event) => {
-    //     const { name, id, value } = event.target;
-
-    //     setNeedBags(prevNeedBags => ({
-    //         ...prevNeedBags,
-    //         [name]: {
-    //             count: value
-    //         }
-    //     }));
-    // }
-
-    // function craftBagsFromInv(recipe){
-    //     const { clothType, reagents } = recipe;
-
-    //     let fetchInventory = inventoryData[clothType],
-    //         invCount = fetchInventory.count;
-    //     let fetchRecipeCloth = reagents[0],
-    //         clothPerBag = fetchRecipeCloth.count;
-
-    //     let math = (invCount > clothPerBag) && Math.floor(invCount / clothPerBag);
-    //     return math;
-    // }
-
-    function craftBagsFromInv(){
-        let inventory = inventoryData[clothType].count;
-        let clothPerBag = reagents[0].count;
-        return Math.floor(inventory / clothPerBag);
-    }
-    
-    let craftableCount = craftBagsFromInv(recipe); 
-    console.log('craftableCount: ', craftableCount); 
-
-    const recipeReagents = reagents.map((reagent) => {
-        
-        let isCloth = reagent.name == 'cloth' ? true : false;
-        
-        let inventoryCount = isCloth ? inventoryData[reagent.type].count : inventoryData[reagent.name][reagent.type].count;
-        // console.log('inventoryCount: ', inventoryCount);
-        
-        return <RecipeReagent 
-            key={reagent.id} 
-            reagent={reagent} 
-            recipe={recipe} 
-            count={reagent.count * bagCount} 
-            type={reagent.type} 
-            parent="recipe" 
-        />
-    });
-
-    const reagentList = reagents.map((reagent) => {
-        return <RecipeSummaryListItem 
-        key={reagent.type} 
-        reagent={reagent} 
-        bagCount={bagCount} 
-        craftableCount={craftableCount} 
-        />
-    });
-    
-    console.log('reagentList: ', reagentList);
-
-    // const imgPath = `../assets/${bagName}_${clothType}.jpg`;
-    // const imgUrl = new URL(imgPath, import.meta.url).href;
-
-    let recipeClass = `recipe-single ${parent}`;
-    console.log('needBags: ', needBags);
-
-    let showCraftableCount = craftableCount > 0 && <span className="inventory-count">({craftableCount})</span>
-    let showBagCount = bagCount > 0 && <span className="count">x{bagCount}</span>;
+  const recipeReagents = reagents.map((reagent) => {
+    // if name is cloth and useBolts is true
+    let replaceCloth =
+      reagent.name == "cloth" && useBolts == true ? true : false;
 
     return (
-        <div className={recipeClass}> 
-            <RecipeHeader 
-                parent={parent} 
-                recipe={recipe} 
-                count={bagCount} 
+      <RecipeReagent
+        key={replaceCloth ? reagent.bolt.id : reagent.id}
+        reagent={reagent}
+        recipe={recipe}
+        count={
+          replaceCloth
+            ? reagent.bolt.count * bagCount
+            : reagent.count * bagCount
+        } // reagent per recipe * amount to craft
+        type={reagent.type}
+        useBolts={useBolts}
+      />
+    );
+  });
 
-                needBags={needBags} 
-                setNeedBags={setNeedBags} 
-            />
+  const reagentList = reagents.map((reagent) => {
+    let replaceCloth =
+      reagent.name == "cloth" && useBolts == true ? true : false;
+    return (
+      <RecipeSummaryListItem
+        key={reagent.type}
+        reagent={reagent}
+        summaryCount={
+          replaceCloth
+            ? reagent.bolt.count * bagCount
+            : reagent.count * bagCount
+        }
+        useBolts={useBolts}
+      />
+    );
+  });
 
-            {parent == 'recipe' && <div className="recipe-reagents">
-                { recipeReagents }
-            </div>}
+  let craftableCount = craftBagsFromInv(recipe);
+  let showCraftableCount = craftableCount > 0 && (
+    <span className="inventory-count">({craftableCount})</span>
+  );
+  let showBagCount = bagCount > 0 && <span className="count">x{bagCount}</span>;
+  let recipeClass = `grid-flex-wrapper recipe-single recipe summary-${showSummary}`;
+  let reagentClass = `recipe-reagents reagent-count-${reagents.length}`;
 
-            {parent == 'recipe' && showSummary != false && <div className="recipe-summary">
-                <h4 className="summary-title caps">{clothType} {bagName} {showCraftableCount}<span className="count-border"></span>{showBagCount}</h4>
-                <ul className="summary-list">
-                    { reagentList }
-                </ul>
-            </div>}
+  return (
+    <div className={recipeClass}>
+      <div className="grid-flex-column recipe-main">
+        <RecipeHeader
+          parent="recipe"
+          recipe={recipe}
+          needBags={needBags}
+          setNeedBags={setNeedBags}
+        />
+
+        <div className={reagentClass}>{recipeReagents}</div>
+      </div>
+
+      {showSummary != false && (
+        <div className="grid-flex-column recipe-summary">
+          <h4 className="summary-title caps">
+            {clothType} {bagName} {showCraftableCount}
+            <span className="count-border"></span>
+            {showBagCount}
+          </h4>
+          <ul className="summary-list">{reagentList}</ul>
         </div>
-    )
-}
+      )}
+    </div>
+  );
+};

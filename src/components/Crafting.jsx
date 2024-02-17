@@ -1,86 +1,72 @@
-import { useState, useContext } from 'react';
-import { InventoryContext } from '../helper/Context.jsx';
+import { useState } from "react";
 
-import { BAGS_DATA } from '../BAGS_DATA.js';
+import { BAGS_DATA_P1 } from "../BAGS_DATA.js";
+import { BAGS_DATA_P2 } from "../BAGS_DATA.js";
 
-import { NewBags } from './NewBags.jsx';
-import { Controls } from './Controls.jsx';
-import { Recipe } from './Recipe.jsx';
+import { NewBags } from "./NewBags.jsx";
+import { Controls } from "./Controls.jsx";
+import { Recipe } from "./Recipe.jsx";
 
-export const Crafting = ({useBolts,setUseBolts}) => {
-    const { inventoryData } = useContext(InventoryContext);
+export const Crafting = ({
+  needBags,
+  setNeedBags,
+  useBolts,
+  setUseBolts,
+  phase,
+}) => {
+  const [showSummary, setShowSummary] = useState(true);
 
-    let bags = {
-        linen: {
-            count: 0,
-        },
-        wool: {
-            count: 0,
-        },
-        silk: {
-            count: 0,
-        }
-    }
-    const [needBags, setNeedBags] = useState(bags);
+  let recipeElements;
 
-    const [showSummary, setShowSummary] = useState(true);
-
-    // function resetBagCount(recipe){
-    //     setNeedBags(prevNeedBags => ({
-    //         ...prevNeedBags,
-    //         [recipe.clothType]: {
-    //             count: 0
-    //         }
-    //     }));
-    // }
-
-    // function craftBagsFromInv(recipe){
-    //     let bagCount = needBags[recipe.clothType];
-    //     return bagCount;
-    // }
-
-    const recipeElements = BAGS_DATA.map((recipe) => {
-
-        // console.log('recipeElements->useBolts: ', useBolts);
-
-        let bagCount = needBags[recipe.clothType];
-        
-        // console.log('bagCount: ', bagCount);
-
-        let parent = 'recipe';
-        
-
-        return (
-            bagCount.count > 0 && 
-            <Recipe 
-                key={recipe.id} 
-                recipe={recipe} 
-                parent={parent} 
-                
-                bagCount={bagCount.count} // needBags
-
-                showSummary={showSummary} 
-                useBolts={useBolts} 
-            />
+  if (phase == 2) {
+    recipeElements = BAGS_DATA_P2.map((recipe) => {
+      let bagCount = needBags[recipe.clothType].count;
+      return (
+        bagCount > 0 && (
+          <Recipe
+            key={recipe.id}
+            recipe={recipe}
+            parent="recipe"
+            needBags={needBags}
+            showSummary={showSummary}
+            useBolts={useBolts}
+          />
         )
+      );
     });
+  } else {
+    recipeElements = BAGS_DATA_P1.map((recipe) => {
+      let bagCount = needBags[recipe.clothType].count;
+      return (
+        bagCount > 0 && (
+          <Recipe
+            key={recipe.id}
+            recipe={recipe}
+            parent="recipe"
+            needBags={needBags}
+            showSummary={showSummary}
+            useBolts={useBolts}
+          />
+        )
+      );
+    });
+  }
 
-    return (
-        <section className="crafting container">
-            <NewBags 
-                needBags={needBags} 
-                setNeedBags={setNeedBags} 
-            />
-            <Controls 
-                useBolts={useBolts} 
-                setUseBolts={setUseBolts} 
-                showSummary={showSummary} 
-                setShowSummary={setShowSummary} 
-            />
-            <div className="recipes">
-                <h4>Recipes</h4>
-                {recipeElements}
-            </div>
-        </section>
-    )
-}
+  let recipesClass = `recipes phase-${phase}`;
+
+  return (
+    <section className="crafting container">
+      <NewBags needBags={needBags} setNeedBags={setNeedBags} phase={phase} />
+      <Controls
+        useBolts={useBolts}
+        setUseBolts={setUseBolts}
+        showSummary={showSummary}
+        setShowSummary={setShowSummary}
+      />
+      <div className={recipesClass}>
+        <h4>Recipes</h4>
+        {recipeElements}
+      </div>
+    </section>
+  );
+};

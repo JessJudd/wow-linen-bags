@@ -1,99 +1,108 @@
-import { useContext } from 'react';
-import { InventoryContext } from '../helper/Context.jsx';
-import { MdClose } from 'react-icons/md';
+import { useContext } from "react";
+import { InventoryContext } from "../helper/Context.jsx";
+import { MdClose, MdAdd } from "react-icons/md";
 
-export const RecipeHeader = (
-    {   parent, 
-        recipe, 
-        count,
-        
-        needBags, 
-        setNeedBags, 
-        
-    }) => {
-        
-        const { inventoryData } = useContext(InventoryContext);
-        
-        const { bagName, clothType, reagents } = recipe;
-        
-        
-        
-        let imgPath = `../assets/${bagName}_${clothType}.jpg`;
-        const imgUrl = new URL(imgPath, import.meta.url).href;
-        
-        function addBag(recipe) {
-            const { clothType } = recipe;            
-            
-            setNeedBags(prevNeedBags => ({
-                ...prevNeedBags,
-                [clothType]: {
-                    count: parseInt(prevNeedBags[clothType].count) + 1
-                }
-            }));
-        }
-        function resetBagCount(){
-            setNeedBags(prevNeedBags => ({
-                ...prevNeedBags,
-                [recipe.clothType]: {
-                    count: 0
-                }
-            }));
-        }
-        const handleSetBagCount = (event) => {
-            const { name, value } = event.target;
+export const RecipeHeader = ({
+  parent,
+  recipe,
+  needBags, //needBags[recipe.clothType].count
+  setNeedBags,
+}) => {
+  const { bagName, clothType, reagents } = recipe;
+  const bagCount = needBags[clothType].count;
+  const { inventoryData } = useContext(InventoryContext);
 
-            setNeedBags(prevNeedBags => ({
-                ...prevNeedBags,
-                [name]: {
-                    count: value
-                }
-            }));
-        }
-        function getCraftableFromInventory(){
-            let inventory = inventoryData[clothType].count;
-            let clothPerBag = reagents[0].count;
-            return Math.floor(inventory / clothPerBag);
-        }
+  let imgPath = `../assets/${bagName}_${clothType}.jpg`;
+  let imgHref = new URL(imgPath, import.meta.url);
+  // const imgUrl = imgHref.href;
+  let publicImg = `${bagName}_${clothType}.jpg`;
+  const imgUrl = publicImg;
 
-        const bagInput = <input id={clothType} 
-            className="count-input" 
-            name={clothType}  
-            type="number" 
-            value={count} 
-            onChange={(e)=>handleSetBagCount(e)} 
-        />;
+  function addBag(recipe) {
+    const { clothType } = recipe;
 
-        const bagReset = <span className="reset-bag-count-icon" onClick={resetBagCount}><MdClose color="red" size="1.5em" /></span>;
+    setNeedBags((prevNeedBags) => ({
+      ...prevNeedBags,
+      [clothType]: {
+        count: parseInt(prevNeedBags[clothType].count) + 1,
+      },
+    }));
+  }
+  function resetBagCount() {
+    setNeedBags((prevNeedBags) => ({
+      ...prevNeedBags,
+      [recipe.clothType]: {
+        count: 0,
+      },
+    }));
+  }
+  const handleSetBagCount = (event) => {
+    const { name, value } = event.target;
 
+    setNeedBags((prevNeedBags) => ({
+      ...prevNeedBags,
+      [name]: {
+        count: value,
+      },
+    }));
+  };
+  function getCraftableFromInventory() {
+    let inventory = inventoryData[clothType].count;
+    let clothPerBag = reagents[0].count;
+    return Math.floor(inventory / clothPerBag);
+  }
 
-        let craftableFromInventory = getCraftableFromInventory();
-        console.log('parent: ', parent);
-        console.log('craftableFromInventory: ', craftableFromInventory);
-        const bagCount = (parent == 'recipe' && craftableFromInventory > 0) ? `(${craftableFromInventory}) ${count}` : count;
+  const bagInput = (
+    <input
+      id={clothType}
+      className="count-input"
+      name={clothType}
+      type="number"
+      value={bagCount}
+      onChange={(e) => handleSetBagCount(e)}
+    />
+  );
 
-    return (
-        <div className="recipe-header">
+  const bagReset = (
+    <span className="reset-bag-count-icon" onClick={resetBagCount}>
+      <MdClose color="red" size="1.5em" />
+    </span>
+  );
 
-            <div className="recipe-icon-container" onClick={ parent == 'menu' ? 
-            ()=>addBag(recipe) : undefined }>
-                <span className="bag-count"> 
-                    <span className="num">
-                        { bagCount }
-                    </span> 
-                </span> 
-                <img className="recipe-icon" src={imgUrl} />
-            </div>
+  let craftableFromInventory = getCraftableFromInventory();
+  const bagCountDisplay =
+    parent == "recipe" && craftableFromInventory > 0
+      ? `(${craftableFromInventory}) ${bagCount}`
+      : bagCount;
 
-            <span className="recipe-name">
-                {clothType} {bagName}
-            </span> 
+  let displayBagName =
+    clothType != "enchanted" ? bagName : `Mageweave ${bagName}`;
 
-            { (parent == 'menu' && count > 0) &&
-                <>
-                { bagInput } 
-                { bagReset } 
-                </>
-            }
-        </div>
-    )
-}
+  return (
+    <div className="recipe-header">
+      <div
+        className="recipe-icon-container"
+        onClick={parent == "menu" ? () => addBag(recipe) : undefined}
+      >
+        <span className="bag-count">
+          <span className="num">{bagCountDisplay}</span>
+        </span>
+        <img className="recipe-icon" src={imgUrl} />
+      </div>
+
+      <span
+        className="recipe-name"
+        onClick={parent == "menu" ? () => addBag(recipe) : undefined}
+      >
+        {clothType} {displayBagName}
+      </span>
+
+      {parent == "menu" && bagCount > 0 && (
+        <>
+          {bagInput}
+          {bagReset}
+        </>
+      )}
+    </div>
+  );
+};

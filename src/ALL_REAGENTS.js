@@ -1,4 +1,4 @@
-export const ALL_REAGENTS = [
+export const REAGENTS_P1 = [
     {
         id: 2589,
         name: 'cloth',
@@ -51,6 +51,34 @@ export const ALL_REAGENTS = [
         id: 4234,
         name: 'leather',
         type: 'heavy',
+    },
+];
+
+export const REAGENTS_P2 = [
+    {
+        id: 4338,
+        name: 'cloth',
+        type: 'mageweave',
+        count: 20, 
+    },
+    {
+        id: 4339,
+        name: 'bolt',
+        type: 'mageweave',
+        count: 4, 
+    },
+    {
+        id: 11137,
+        name: 'dust',
+        type: 'vision',
+        count: 4
+    },
+    {
+        id: 4291,
+        name: 'thread',
+        type: 'silken',
+        count: 2,
+        price: 1.25, // sp
     },
 ];
 

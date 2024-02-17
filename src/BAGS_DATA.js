@@ -1,4 +1,4 @@
-export const BAGS_DATA = [
+export const BAGS_DATA_P1 = [
     {
         id: 4238,
         clothType: 'linen',
@@ -13,7 +13,7 @@ export const BAGS_DATA = [
                 perBolt: 3,
                 bolt: {
                     id: 2996,
-                    count: 2,
+                    count: 3,
                 }
             },
             {
@@ -80,6 +80,67 @@ export const BAGS_DATA = [
                 type: 'fine',
                 count: 3,
                 price: 1, // sp
+            },
+        ]
+    },   
+]
+
+export const BAGS_DATA_P2 = [
+    {
+        id: 12065,
+        clothType: 'mageweave',
+        bagName: 'bag',
+        bagSize: 12,
+        reagents: [
+            {
+                id: 4338,
+                name: 'cloth',
+                type: 'mageweave',
+                count: 20, 
+                perBolt: 5,
+                bolt: {
+                    id: 4339,
+                    count: 4
+                }
+            },
+            {
+                id: 4291,
+                name: 'thread',
+                type: 'silken',
+                count: 2,
+                price: 1.25, // sp
+            },
+        ]
+    },   
+    {
+        id: 22307,
+        clothType: 'enchanted',
+        bagName: 'pouch',
+        bagSize: 16,
+        reagents: [
+            {
+                id: 4338,
+                name: 'cloth',
+                type: 'mageweave',
+                count: 20, 
+                perBolt: 5,
+                bolt: {
+                    id: 4339,
+                    count: 4
+                }
+            },
+            {
+                id: 11137,
+                name: 'dust',
+                type: 'vision',
+                count: 4
+            },
+            {
+                id: 4291,
+                name: 'thread',
+                type: 'silken',
+                count: 2,
+                price: 1.25, // sp
             },
         ]
     },   
