@@ -67,8 +67,11 @@ export const Recipe = ({
     <span className="inventory-count">({craftableCount})</span>
   );
   let showBagCount = bagCount > 0 && <span className="count">x{bagCount}</span>;
-  let recipeClass = `grid-flex-wrapper recipe-single recipe summary-${showSummary}`;
+  let recipeClass = `grid-flex-wrapper recipe-single crafting-recipe summary-${showSummary}`;
   let reagentClass = `recipe-reagents reagent-count-${reagents.length}`;
+
+  let displayBagName =
+    clothType != "enchanted" ? bagName : `Mageweave ${bagName}`;
 
   return (
     <div className={recipeClass}>
@@ -86,7 +89,7 @@ export const Recipe = ({
       {showSummary != false && (
         <div className="grid-flex-column recipe-summary">
           <h4 className="summary-title caps">
-            {clothType} {bagName} {showCraftableCount}
+            {clothType} {displayBagName} {showCraftableCount}
             <span className="count-border"></span>
             {showBagCount}
           </h4>

@@ -5,7 +5,7 @@ import { RecipeHeader } from "./RecipeHeader.jsx";
 export const NewBags = ({ needBags, setNeedBags, phase }) => {
   const listBags = (phase == 2 ? BAGS_DATA_P2 : BAGS_DATA_P1).map((recipe) => {
     return (
-      <div className="recipe-single menu" key={recipe.clothType}>
+      <div className="recipe-single menu-recipe" key={recipe.clothType}>
         <RecipeHeader
           parent="menu"
           recipe={recipe}

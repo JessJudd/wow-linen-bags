@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { InventoryContext } from "../helper/Context.jsx";
 import { MdKeyboardArrowUp, MdKeyboardArrowDown } from "react-icons/md";
 
 export const Controls = ({
@@ -9,7 +10,19 @@ export const Controls = ({
 }) => {
   const [optionsMenuVisibility, setOptionsMenuVisibility] = useState(false);
 
+  const { inventoryData, setInventoryData } = useContext(InventoryContext);
+
+  const resetClothBoltCount = () => {
+    console.log("inventoryData: ", inventoryData);
+    if (useBolts) {
+      // set cloth to 0 in inventory
+    } else {
+      // set bolts to 0 in inventory
+    }
+  };
+
   const toggleBolts = (event) => {
+    resetClothBoltCount();
     setUseBolts((prevUseBolts) => !prevUseBolts);
   };
 
@@ -24,7 +37,7 @@ export const Controls = ({
   }
 
   return (
-    <section className="crafting-controls">
+    <section className="recipe-options">
       <h4 className="toggle-header">
         <span className="header-copy" onClick={() => toggleOptionsMenu()}>
           Recipe Options
@@ -46,8 +59,8 @@ export const Controls = ({
         onChange={() => toggleOptionsMenu()}
       /> */}
       {optionsMenuVisibility != false && (
-        <div className="options">
-          <form className="options-form">
+        <div className="options-container">
+          <form className="options-accordion options-form">
             <fieldset className="fieldset-recipe-type">
               <label className="options-form-label">
                 <input
@@ -93,7 +106,7 @@ export const Controls = ({
               </label>
             </fieldset>
           </form>
-          <div className="form-legend">
+          <div className="options-accordion options-form-legend">
             <span>
               <strong>Simple recipe:</strong> no bolts, calculates cloth
               directly to bags

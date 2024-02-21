@@ -54,6 +54,20 @@ export const Crafting = ({
 
   let recipesClass = `recipes phase-${phase}`;
 
+  const getBagTotal = () => {
+    let sum = 0;
+    for (const type in needBags) {
+      let bagCount = needBags[type].count;
+
+      if (bagCount != undefined) {
+        sum += bagCount;
+      }
+    }
+    return sum;
+  };
+
+  let bagTotal = getBagTotal();
+
   return (
     <section className="crafting container">
       <NewBags needBags={needBags} setNeedBags={setNeedBags} phase={phase} />
@@ -66,6 +80,11 @@ export const Crafting = ({
       <div className={recipesClass}>
         <h4>Recipes</h4>
         {recipeElements}
+        {bagTotal == 0 && (
+          <span className="empty-placeholder">
+            Selected bag recipes will appear here.
+          </span>
+        )}
       </div>
     </section>
   );

@@ -13,7 +13,7 @@ export const InventoryReagent = ({ count, parent, reagent, type }) => {
   let imgHref = new URL(imgPath, import.meta.url);
   // const imgUrl = imgHref.href;
   let publicImg = `${reagent.name}_${reagent.type}.jpg`;
-  console.log("publicImg: ", publicImg);
+  // console.log("publicImg: ", publicImg);
   const imgUrl = publicImg;
 
   function addReagent(name, type) {
@@ -72,11 +72,14 @@ export const InventoryReagent = ({ count, parent, reagent, type }) => {
 
   let tooltip = parent == "menu" ? `tooltip` : "";
 
-  console.log("render inventoryReagent");
+  let parentClass =
+    parent == "menu" ? `parent-inventory-menu` : `parent-user-inventory`;
+
+  console.log("<--- rendering inventoryReagent --->");
 
   return (
     <div
-      className={`reagent ${reagent.name} parent-${parent} ${reagentOff} ${tooltip}`}
+      className={`reagent ${reagent.name} ${parentClass} ${reagentOff} ${tooltip}`}
       data-text={`${reagent.type} ${reagent.name}`}
     >
       <div
