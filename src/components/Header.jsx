@@ -80,7 +80,7 @@ export const Header = ({ faction, setFaction, phase, handleSetPhase }) => {
           <h1 className="heading">
             {faction == "alliance" ? "Sindaheri" : "Saraneth"}'s Salacious
             Satchels
-            <DevWindowTracker />
+            {/* <DevWindowTracker /> */}
           </h1>
           <span className="subheading">
             Bag Calculator | Classic World of Warcraft
