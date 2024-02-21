@@ -1,4 +1,5 @@
 # Linen Bag Calculator
 
-A handy dandy calculator for crafting linen bags in Classic World of Warcraft. 
+A handy dandy calculator for crafting bags in Season of Discovery for Classic World of Warcraft.
+
 Built using Vite + React
